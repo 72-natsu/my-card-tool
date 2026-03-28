@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ProProxy | 高精度プロキシーカードメーカー</title>
+<title>ProProxy | プロ級プロキシーカードメーカー</title>
 <!-- 外部ライブラリ: PDF生成用 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- フォント読み込み -->
@@ -20,6 +20,7 @@
   --text-muted: #a1a1aa;
   --border: #27272a;
   --accent: #ef4444;
+  --success: #22c55e;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,7 +35,6 @@ body {
 
 /* --- レイアウトコンポーネント --- */
 
-/* ヘッダー */
 header {
   position: fixed;
   top: 0; width: 100%;
@@ -53,9 +53,7 @@ nav { display: flex; align-items: center; }
 nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; margin-left: 24px; transition: color 0.2s; }
 nav a:hover { color: var(--primary); }
 .btn-nav-start { background: var(--primary); color: #fff; padding: 8px 20px; border-radius: 8px; margin-left: 24px; transition: 0.3s; font-weight: 700; border: none; cursor: pointer; }
-.btn-nav-start:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--primary-glow); }
 
-/* ヒーローセクション */
 .hero {
   padding: 180px 20px 100px;
   text-align: center;
@@ -66,23 +64,17 @@ nav a:hover { color: var(--primary); }
 .hero-btns { display: flex; gap: 20px; justify-content: center; }
 .btn-hero { padding: 18px 40px; border-radius: 14px; border: none; font-size: 17px; font-weight: 800; cursor: pointer; transition: all 0.3s; text-decoration: none; }
 .btn-p { background: var(--primary); color: #fff; box-shadow: 0 10px 30px var(--primary-glow); }
-.btn-p:hover { background: #6b59e6; transform: translateY(-3px) scale(1.05); }
 
-/* 機能カード */
-.features { padding: 100px 20px; max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; }
-.f-card { background: var(--bg-card); padding: 40px; border-radius: 28px; border: 1px solid var(--border); transition: 0.3s; }
-.f-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+/* 特徴紹介 (整理済み) */
+.features { padding: 60px 20px; max-width: 800px; margin: 0 auto; }
+.f-card { background: var(--bg-card); padding: 40px; border-radius: 28px; border: 1px solid var(--border); transition: 0.3s; text-align: center; }
 .f-card .icon { font-size: 40px; margin-bottom: 24px; display: block; }
-.f-card h3 { font-size: 22px; margin-bottom: 14px; color: #fff; }
-.f-card p { color: var(--text-muted); font-size: 15px; line-height: 1.7; }
+.f-card h3 { font-size: 24px; margin-bottom: 14px; color: #fff; }
+.f-card p { color: var(--text-muted); font-size: 16px; line-height: 1.7; }
 
-/* ツールコンテナ */
 .app-section { padding: 120px 24px; background: #0c0c14; border-top: 1px solid var(--border); }
 .app-wrapper { max-width: 1400px; margin: 0 auto; }
-.tool-header { margin-bottom: 50px; text-align: center; }
-.tool-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
 
-/* タブ */
 .tabs { display: flex; background: #1a1a2e; border-radius: 16px; padding: 8px; margin-bottom: 40px; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
 .tab-btn { flex: 1; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; background: transparent; color: #666; transition: all 0.3s; }
 .tab-btn.active { background: var(--primary); color: white; }
@@ -91,24 +83,30 @@ nav a:hover { color: var(--primary); }
 .tab-panel.active { display: block; animation: fadeIn 0.5s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* アップロード */
-.upload-zone { border: 2px dashed #333; border-radius: 24px; padding: 80px 40px; text-align: center; cursor: pointer; background: #16213e; margin-bottom: 30px; transition: 0.3s; }
-.upload-zone:hover { border-color: var(--primary); background: #1e1b4b; }
-.upload-icon { font-size: 64px; margin-bottom: 16px; display: block; }
-.upload-text { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.upload-zone { border: 2px dashed #333; border-radius: 24px; padding: 80px 40px; text-align: center; cursor: pointer; background: #16213e; margin-bottom: 30px; transition: 0.3s; position: relative; }
+.upload-zone.drag-over { border-color: var(--primary); background: #1e1b4b; box-shadow: 0 0 20px var(--primary-glow); }
 
-/* 編集エリア */
-.layer-controls { display: flex; gap: 14px; margin-bottom: 20px; background: #16213e; padding: 12px; border-radius: 16px; border: 1px solid #333; }
-.layer-btn { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #444; background: #0d1b2a; color: #888; cursor: pointer; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; }
+/* 編集インターフェース */
+.layer-controls { display: flex; gap: 14px; margin-bottom: 20px; background: #16213e; padding: 12px; border-radius: 16px; border: 1px solid #333; flex-wrap: wrap; }
+.layer-btn { flex: 1; min-width: 140px; padding: 14px; border-radius: 10px; border: 1px solid #444; background: #0d1b2a; color: #888; cursor: pointer; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.2s; }
 .layer-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-.layer-num { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; }
-.layer-btn.active .layer-num { background: white; color: var(--primary); font-weight: 900; }
 
+/* ソースコンテナ */
 .source-container { 
   position: relative; width: 100%; height: 80vh; overflow: hidden; border-radius: 20px; border: 1px solid #333; margin-bottom: 24px; background: #070710; user-select: none; touch-action: none;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
 }
-.deck-source-img { position: absolute; top: 0; left: 0; display: block; transform-origin: 0 0; will-change: transform; }
-#deck-grid-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+
+/* ズーム連動ワークスペース */
+.workspace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.deck-source-img { display: block; width: 100%; }
+#deck-grid-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 10; width: 100%; height: 100%; }
 
 .grid-handle {
   position: absolute; width: 32px; height: 32px; background: var(--primary); border: 5px solid #fff; border-radius: 50%; z-index: 20; cursor: move; transform: translate(-50%, -50%); display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.8);
@@ -117,7 +115,7 @@ nav a:hover { color: var(--primary); }
 
 #magnifier { position: absolute; width: 180px; height: 180px; border: 4px solid var(--primary); border-radius: 50%; pointer-events: none; z-index: 100; display: none; background: #000; box-shadow: 0 0 40px rgba(0,0,0,0.9); }
 
-/* 各種フォーム・設定 */
+/* 設定フォーム */
 .grid-settings { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; margin-bottom: 30px; }
 .gs-field { display: flex; flex-direction: column; gap: 8px; }
 .gs-field label { font-size: 11px; color: #888; font-weight: 800; text-transform: uppercase; }
@@ -125,7 +123,14 @@ nav a:hover { color: var(--primary); }
 
 .zoom-control { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; background: #16213e; padding: 16px 24px; border-radius: 16px; border: 1px solid #333; }
 .zoom-control label { font-size: 13px; font-weight: 800; min-width: 90px; color: #888; }
-.zoom-control input[type=range] { flex: 1; accent-color: var(--primary); }
+
+/* 切り分けプリセットボタン */
+.split-presets { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.preset-split-btn { 
+  flex: 1; min-width: 150px; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #27272a; color: #fff; 
+  cursor: pointer; font-size: 13px; font-weight: 700; transition: 0.2s; text-align: center;
+}
+.preset-split-btn.active { background: var(--primary); border-color: var(--primary); }
 
 /* リスト表示 */
 .split-grid, .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; margin-bottom: 40px; }
@@ -136,21 +141,49 @@ nav a:hover { color: var(--primary); }
 .split-card.selected .sel-badge { opacity: 1; }
 
 .card-thumb .badge { position: absolute; top: 10px; left: 10px; background: var(--primary); color: white; font-size: 13px; font-weight: 900; padding: 4px 10px; border-radius: 8px; z-index: 5; }
-.card-thumb .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; gap: 14px; }
+.card-thumb .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; gap: 20px; }
 .card-thumb:hover .overlay { opacity: 1; }
-.qty-controls { display: flex; align-items: center; gap: 20px; }
-.qty-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--primary); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
+
+/* 枚数調整コントロールの拡大 */
+.qty-controls { display: flex; align-items: center; gap: 16px; }
+.qty-btn { 
+  width: 52px; 
+  height: 52px; 
+  border-radius: 50%; 
+  border: none; 
+  background: var(--primary); 
+  color: white; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 28px; 
+  font-weight: bold; 
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.qty-btn:hover { background: #9283f9; transform: scale(1.1); }
+.qty-btn:active { transform: scale(0.92); }
+.qty-val { font-size: 28px; font-weight: 900; color: #fff; min-width: 32px; text-align: center; }
 
 /* 印刷シミュレーター */
 .preview-section { background: #16213e; border-radius: 24px; padding: 60px 40px; margin-bottom: 40px; border: 1px solid #2a2a4a; display: flex; flex-direction: column; align-items: center; }
 .preview-paper { background: white; margin: 0 auto; position: relative; box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
 .preview-card { position: absolute; border: 0.1px solid #ddd; overflow: hidden; background: #fff; }
 .preview-card img { width: 100%; height: 100%; object-fit: cover; }
+.preview-slot-guide { position: absolute; border: 1px dashed #ccc; background: rgba(0,0,0,0.02); pointer-events: none; z-index: 1; }
 
-.btn-pdf { width: 100%; padding: 24px; border-radius: 18px; background: linear-gradient(135deg, var(--primary), #5b4fcf); color: white; font-weight: 900; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 15px 40px var(--primary-glow); }
-.btn-pdf:disabled { opacity: 0.4; cursor: not-allowed; }
+/* プレビューページ操作 */
+.preview-pagination { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
+.page-nav-btn { background: #27272a; border: 1px solid #444; color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+.page-nav-btn:hover:not(:disabled) { background: var(--primary); border-color: var(--primary); }
+.page-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.page-info { font-weight: 800; font-size: 16px; color: var(--primary); }
 
-/* 警告・フッター */
+.btn-pdf { width: 100%; padding: 24px; border-radius: 18px; background: linear-gradient(135deg, var(--primary), #5b4fcf); color: white; font-weight: 900; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 15px 40px var(--primary-glow); transition: 0.3s; }
+.btn-pdf:hover { transform: translateY(-4px); box-shadow: 0 20px 50px var(--primary-glow); }
+.btn-pdf:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
 footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--border); background: var(--bg-dark); color: #555; font-size: 14px; }
 .warning-text { color: var(--accent); font-weight: 700; margin-bottom: 12px; font-size: 15px; display: block; }
 
@@ -163,51 +196,32 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
 </head>
 <body>
 
-<!-- ナビゲーション -->
 <header>
   <a href="#" class="logo">PRO<span>PROXY</span></a>
   <nav>
-    <a href="#features">機能紹介</a>
     <a href="#tool" class="btn-nav-start">今すぐ作成</a>
   </nav>
 </header>
 
-<!-- ヒーロー -->
 <section class="hero">
   <h2>そのデッキ画像、<br>一瞬で印刷用PDFに。</h2>
-  <p>ProProxy（プロプロキシ）は、TCGプレイヤーのための究極のプロキシー作成ツールです。スクリーンショットを最適なサイズで自動認識し、精密なハンドル操作で完璧な切り分けを実現します。</p>
+  <p>ProProxy（プロプロキシ）は、TCGプレイヤーのための究極のプロキシー作成ツールです。ドラッグ＆ドロップで画像を登録。精密なハンドル操作で完璧な切り分けを実現します。</p>
   <div class="hero-btns">
     <a href="#tool" class="btn-hero btn-p">作成を開始する</a>
   </div>
 </section>
 
-<!-- 特徴 -->
+<!-- 特徴 (整理後) -->
 <section class="features" id="features">
   <div class="f-card">
-    <span class="icon">✂️</span>
-    <h3>精密な分解ロジック</h3>
-    <p>4隅の個別ハンドルと、赤いガイド線が表示される拡大鏡により、1pxのズレも許さない正確なカード切り出しを可能にします。</p>
-  </div>
-  <div class="f-card">
     <span class="icon">📐</span>
-    <h3>自動サイズ最適化</h3>
-    <p>遊戯王のミニサイズや、ポケカ・デュエマの標準サイズに自動フィット。印刷設定で選ぶだけで最適な出力サイズに調整します。</p>
-  </div>
-  <div class="f-card">
-    <span class="icon">🔒</span>
-    <h3>ローカル処理</h3>
-    <p>すべての画像処理はブラウザ内で行われます。あなたのデッキ画像がインターネット上のサーバーに保存されることはありません。</p>
+    <h3>3×3 ページレイアウト</h3>
+    <p>標準的なA4用紙に最大9枚を効率よく配置。プレビュー画面で全カードの内容を印刷前に確認できます。</p>
   </div>
 </section>
 
-<!-- メインツールセクション -->
 <section class="app-section" id="tool">
   <div class="app-wrapper">
-    <div class="tool-header">
-      <h2>ツールコンソール</h2>
-      <p class="text-muted">画像を追加してプロキシーを作成してください</p>
-    </div>
-
     <div class="tabs">
       <button class="tab-btn active" id="t-single" onclick="switchTab('single')">📁 1枚ずつ追加</button>
       <button class="tab-btn" id="t-deck" onclick="switchTab('deck')">🗂️ デッキ画像を切り分け</button>
@@ -216,49 +230,54 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
 
     <!-- Panel: 1枚ずつ -->
     <div class="tab-panel active" id="panel-single">
-      <div class="upload-zone" onclick="document.getElementById('file-single').click()">
+      <div class="upload-zone" id="drop-zone-single" onclick="document.getElementById('file-single').click()">
         <input type="file" id="file-single" accept="image/*" multiple onchange="onFileSingle(event)">
         <span class="upload-icon">📁</span>
         <div class="upload-text">画像ファイルを選択</div>
-        <p class="text-muted">（複数同時OK / ドラッグ＆ドロップ可）</p>
+        <p class="text-muted">（複数同時OK / 別のサイトからドラッグ＆ドロップ可）</p>
       </div>
       <div class="card-grid" id="main-card-list"></div>
     </div>
 
-    <!-- Panel: デッキ切り分け -->
+    <!-- Panel: Deck Split -->
     <div class="tab-panel" id="panel-deck">
       <div class="upload-zone" id="deck-upload-area" onclick="document.getElementById('file-deck').click()">
         <input type="file" id="file-deck" accept="image/*" onchange="onFileDeck(event)">
         <span class="upload-icon">🗂️</span>
         <div class="upload-text">デッキ一覧画像をアップロード</div>
-        <p class="text-muted">DeckMakerなどのスクリーンショットに対応</p>
       </div>
 
       <div id="deck-editor" style="display:none;">
         <div class="layer-controls">
           <button class="layer-btn active" id="btn-layer1" onclick="setLayerMode('image')">
-            <div class="layer-num">1</div> 画像の位置を移動
+            <div class="layer-num">1</div> 画像位置を調整
           </button>
           <button class="layer-btn" id="btn-layer2" onclick="setLayerMode('grid')">
-            <div class="layer-num">2</div> 切り取り範囲を指定 (4隅調整)
+            <div class="layer-num">2</div> 切り取り範囲を指定
           </button>
+          <button class="layer-btn" style="background:var(--accent); color:white; border-color:var(--accent);" onclick="removeDeckImage()">画像を削除</button>
+        </div>
+
+        <div class="split-presets">
+          <button class="preset-split-btn active" id="p-split-std" onclick="applySplitPreset('standard')">デュエマ、ポケカ (8x5)</button>
+          <button class="preset-split-btn" id="p-split-mini" onclick="applySplitPreset('mini')">遊戯王 (8x5)</button>
         </div>
 
         <div class="zoom-control">
           <label>表示ズーム</label>
-          <input type="range" id="source-zoom" min="20" max="400" value="100" oninput="updateSourceZoom()">
-          <span id="zoom-val" style="min-width:60px; text-align:right; font-weight:900;">100%</span>
+          <input type="range" id="source-zoom" min="20" max="400" value="50" oninput="updateSourceZoom()">
+          <span id="zoom-val" style="min-width:60px; text-align:right; font-weight:900;">50%</span>
         </div>
 
         <div class="source-container" id="source-container" tabindex="0">
-          <img id="deck-src-img" class="deck-source-img">
-          <canvas id="deck-grid-overlay"></canvas>
-          <!-- ハンドル -->
-          <div id="handle-tl" class="grid-handle"></div>
-          <div id="handle-tr" class="grid-handle"></div>
-          <div id="handle-bl" class="grid-handle"></div>
-          <div id="handle-br" class="grid-handle"></div>
-          <!-- 拡大鏡 (キャンバス描画式) -->
+          <div class="workspace" id="workspace">
+            <img id="deck-src-img" class="deck-source-img">
+            <canvas id="deck-grid-overlay"></canvas>
+            <div id="handle-tl" class="grid-handle"></div>
+            <div id="handle-tr" class="grid-handle"></div>
+            <div id="handle-bl" class="grid-handle"></div>
+            <div id="handle-br" class="grid-handle"></div>
+          </div>
           <canvas id="magnifier" width="180" height="180"></canvas>
         </div>
 
@@ -271,11 +290,11 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
           <div class="gs-field"><label>&nbsp;</label><button class="layer-btn" style="padding:10px; font-size:12px; background:#222;" onclick="resetAllPositions()">リセット</button></div>
         </div>
 
-        <h3 style="margin-bottom:16px; border-bottom:1px solid #333; padding-bottom:8px;">切り分けプレビュー（クリックで選択）</h3>
+        <h3 style="margin-bottom:16px; border-bottom:1px solid #333; padding-bottom:8px;">切り分けプレビュー</h3>
         <div class="split-grid" id="split-grid"></div>
         <div class="split-actions">
           <button class="layer-btn" style="max-width:200px; background:#222;" onclick="selectAllSplit()">全て選択</button>
-          <button class="btn-pdf" id="btn-add-sel" onclick="addSelectedCards()" disabled style="padding:16px;">選択したカードをリストに追加</button>
+          <button class="btn-pdf" id="btn-add-sel" onclick="addSelectedCards()" disabled style="padding:16px;">選択したカードを追加</button>
         </div>
       </div>
     </div>
@@ -285,17 +304,25 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
       <div class="grid-settings" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
         <div class="gs-field"><label>カードサイズ</label>
           <select id="card-size" onchange="updatePrintPreview()" style="padding:14px; border-radius:12px; background:#0d1b2a; color:#fff; border:1px solid #333; font-weight:700;">
-            <option value="63,88">標準サイズ (63×88mm) - デュエマ/ポケカ等</option>
-            <option value="59,86">ミニサイズ (59×86mm) - 遊戯王等</option>
+            <option value="63,88">デュエマ、ポケカ (63×88mm)</option>
+            <option value="59,86">遊戯王 (59×86mm)</option>
           </select>
         </div>
-        <div class="gs-field"><label>用紙余白 (mm)</label><input type="number" id="p-margin" value="10" oninput="updatePrintPreview()"></div>
+        <div class="gs-field"><label>用紙余白 (mm)</label><input type="number" id="p-margin" value="8" oninput="updatePrintPreview()"></div>
         <div class="gs-field"><label>カード間隔 (mm)</label><input type="number" id="p-gap" value="2" oninput="updatePrintPreview()"></div>
       </div>
       
       <div id="print-card-grid" class="card-grid"></div>
+      
       <div class="preview-section">
-        <h3 style="margin-bottom:32px; color:#aaa; font-weight:900; letter-spacing:0.2em;">📄 A4 PRINT SIMULATOR</h3>
+        <h3 style="margin-bottom:20px; color:#aaa; font-weight:900; letter-spacing:0.2em;">📄 印刷プレビュー (3×3グリッド)</h3>
+        
+        <div class="preview-pagination">
+          <button class="page-nav-btn" id="prev-page" onclick="changePreviewPage(-1)">◀ 前のページ</button>
+          <span class="page-info" id="page-display">Page 1 / 1</span>
+          <button class="page-nav-btn" id="next-page" onclick="changePreviewPage(1)">次のページ ▶</button>
+        </div>
+
         <div id="preview-paper" class="preview-paper"></div>
       </div>
       
@@ -303,22 +330,21 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
          <span class="warning-text">※プロキシカードは大会、イベントでは使用できません。1人回し、親しい間柄でのプレイでのみでお楽しみください。</span>
       </div>
       
-      <button class="btn-pdf" id="btn-pdf" onclick="exportPDF()" disabled>📥 高解像度PDFを作成して保存</button>
+      <button class="btn-pdf" id="btn-pdf" onclick="exportPDF()" disabled>📥 全ページをPDFで保存</button>
     </div>
   </div>
 </section>
 
 <footer>
   <span class="warning-text">プロキシカードは大会、イベントでは使用できません。1人回し、親しい間柄でのプレイでのみでお楽しみください。</span>
-  <p>&copy; 2026 ProProxy Maker. Open-source Tool for TCG Players.</p>
+  <p>&copy; 2026 ProProxy Maker.</p>
 </footer>
 
-<!-- 切り分け計算用隠しキャンバス -->
 <canvas id="split-canvas" style="display:none;"></canvas>
 
 <script>
 /**
- * Application State
+ * Global State
  */
 let cards = [];
 let splitImages = [];
@@ -327,60 +353,103 @@ let deckImg = null;
 
 let layerMode = 'image'; 
 let imgPos = { x: 0, y: 0 };
-let imgVisualScale = 1.0;
-let posTL = { x: 10, y: 10 };
-let posBR = { x: 90, y: 90 };
+let imgVisualScale = 0.5; // 初期50%
+let posTL = { x: 10, y: 10 }; // 画像に対する%
+let posBR = { x: 90, y: 90 }; // 画像に対する%
 
 let activeAction = null; 
 let dragStartPos = { x: 0, y: 0 };
+let currentPreviewPage = 0;
 
 /**
- * Navigation / UI Controllers
+ * UI / Tab Logic
  */
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.id === `t-${tab}`));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `panel-${tab}`));
-  if(tab === 'print') updatePrintPreview();
+  if(tab === 'print') { currentPreviewPage = 0; updatePrintPreview(); }
 }
 
 function setLayerMode(mode) {
   layerMode = mode;
   document.getElementById('btn-layer1').classList.toggle('active', mode === 'image');
   document.getElementById('btn-layer2').classList.toggle('active', mode === 'grid');
-  const container = document.getElementById('source-container');
-  if (container) container.classList.toggle('active-grid', mode === 'grid');
+  const ws = document.getElementById('workspace');
+  if (ws) ws.classList.toggle('active-grid', mode === 'grid');
 }
 
+function removeDeckImage() {
+  deckImg = null;
+  document.getElementById('deck-src-img').src = '';
+  document.getElementById('deck-upload-area').style.display = 'block';
+  document.getElementById('deck-editor').style.display = 'none';
+  splitImages = [];
+  renderSplitGrid();
+}
+
+/**
+ * Zoom Logic (Linked)
+ */
 function updateSourceZoom() {
-  const val = document.getElementById('source-zoom').value;
+  const valDisp = document.getElementById('zoom-val');
+  const slider = document.getElementById('source-zoom');
+  const ws = document.getElementById('workspace');
+  if (!slider || !ws) return;
+  
+  const val = slider.value;
   imgVisualScale = val / 100;
-  document.getElementById('zoom-val').innerText = val + '%';
-  const img = document.getElementById('deck-src-img');
-  if (img) {
-    img.style.width = (imgVisualScale * 100) + '%';
-    img.style.transform = `translate(${imgPos.x}px, ${imgPos.y}px)`;
+  if(valDisp) valDisp.innerText = val + '%';
+  
+  ws.style.transform = `translate(${imgPos.x}px, ${imgPos.y}px) scale(${imgVisualScale})`;
+}
+
+function applySplitPreset(type) {
+  document.querySelectorAll('.preset-split-btn').forEach(b => b.classList.remove('active'));
+  const printSizeSelect = document.getElementById('card-size');
+
+  if (type === 'standard') {
+    const btn = document.getElementById('p-split-std');
+    if(btn) btn.classList.add('active');
+    document.getElementById('g-cols').value = 8;
+    document.getElementById('g-rows').value = 5;
+    posTL = { x: 2, y: 8 }; posBR = { x: 98, y: 92 };
+    if(printSizeSelect) printSizeSelect.value = "63,88";
+  } else if (type === 'mini') {
+    const btn = document.getElementById('p-split-mini');
+    if(btn) btn.classList.add('active');
+    document.getElementById('g-cols').value = 8;
+    document.getElementById('g-rows').value = 5;
+    posTL = { x: 2, y: 12 }; posBR = { x: 98, y: 96 };
+    if(printSizeSelect) printSizeSelect.value = "59,86";
   }
+  
+  updateHandleUI();
   splitDeck();
 }
 
 /**
- * Pointer Interactions
+ * Interaction
  */
 function handleStart(e) {
   if (!deckImg) return;
   const container = document.getElementById('source-container');
+  const ws = document.getElementById('workspace');
   const rect = container.getBoundingClientRect();
   const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
   const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-  const xP = ((clientX - rect.left) / rect.width) * 100;
-  const yP = ((clientY - rect.top) / rect.height) * 100;
+  
+  const mxInWs = (clientX - rect.left - imgPos.x) / imgVisualScale;
+  const myInWs = (clientY - rect.top - imgPos.y) / imgVisualScale;
+  
+  const xP = (mxInWs / deckImg.naturalWidth) * 100;
+  const yP = (myInWs / deckImg.naturalHeight) * 100;
 
   if (layerMode === 'grid') {
-    const threshold = 6;
-    if (dist(xP, yP, posTL.x, posTL.y) < threshold) activeAction = 'handle-tl';
-    else if (dist(xP, yP, posBR.x, posTL.y) < threshold) activeAction = 'handle-tr';
-    else if (dist(xP, yP, posTL.x, posBR.y) < threshold) activeAction = 'handle-bl';
-    else if (dist(xP, yP, posBR.x, posBR.y) < threshold) activeAction = 'handle-br';
+    const th = 4;
+    if (dist(xP, yP, posTL.x, posTL.y) < th) activeAction = 'handle-tl';
+    else if (dist(xP, yP, posBR.x, posTL.y) < th) activeAction = 'handle-tr';
+    else if (dist(xP, yP, posTL.x, posBR.y) < th) activeAction = 'handle-bl';
+    else if (dist(xP, yP, posBR.x, posBR.y) < th) activeAction = 'handle-br';
     else if (xP > posTL.x && xP < posBR.x && yP > posTL.y && yP < posBR.y) activeAction = 'pan-grid';
     else { activeAction = 'new'; posTL = {x:xP, y:yP}; posBR = {x:xP, y:yP}; }
   } else {
@@ -388,40 +457,37 @@ function handleStart(e) {
   }
 
   dragStartPos = { x: clientX, y: clientY };
-  document.getElementById('magnifier').style.display = 'block';
+  const magnifier = document.getElementById('magnifier');
+  if(magnifier) magnifier.style.display = 'block';
   updateMagnifier(e);
 }
 
 function handleMove(e) {
   if (!activeAction || !deckImg) return;
   const container = document.getElementById('source-container');
-  const rect = container.getBoundingClientRect();
   const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
   const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-  
+  const rect = container.getBoundingClientRect();
+
   const dx = clientX - dragStartPos.x;
   const dy = clientY - dragStartPos.y;
-  const dxP = (dx / rect.width) * 100;
-  const dyP = (dy / rect.height) * 100;
+  
+  const mxInWs = (clientX - rect.left - imgPos.x) / imgVisualScale;
+  const myInWs = (clientY - rect.top - imgPos.y) / imgVisualScale;
+  const xP = (mxInWs / deckImg.naturalWidth) * 100;
+  const yP = (myInWs / deckImg.naturalHeight) * 100;
 
   if (activeAction === 'pan-img') {
     imgPos.x += dx; imgPos.y += dy;
-    document.getElementById('deck-src-img').style.transform = `translate(${imgPos.x}px, ${imgPos.y}px)`;
+    document.getElementById('workspace').style.transform = `translate(${imgPos.x}px, ${imgPos.y}px) scale(${imgVisualScale})`;
   } else if (activeAction === 'pan-grid') {
+    const dxP = (dx / (deckImg.naturalWidth * imgVisualScale)) * 100;
+    const dyP = (dy / (deckImg.naturalHeight * imgVisualScale)) * 100;
     posTL.x += dxP; posTL.y += dyP; posBR.x += dxP; posBR.y += dyP;
-  } else if (activeAction === 'handle-tl') {
-    posTL.x = ((clientX - rect.left) / rect.width) * 100;
-    posTL.y = ((clientY - rect.top) / rect.height) * 100;
-  } else if (activeAction === 'handle-tr') {
-    posBR.x = ((clientX - rect.left) / rect.width) * 100;
-    posTL.y = ((clientY - rect.top) / rect.height) * 100;
-  } else if (activeAction === 'handle-bl') {
-    posTL.x = ((clientX - rect.left) / rect.width) * 100;
-    posBR.y = ((clientY - rect.top) / rect.height) * 100;
-  } else if (activeAction === 'handle-br' || activeAction === 'new') {
-    posBR.x = ((clientX - rect.left) / rect.width) * 100;
-    posBR.y = ((clientY - rect.top) / rect.height) * 100;
-  }
+  } else if (activeAction === 'handle-tl') { posTL.x = xP; posTL.y = yP; }
+  else if (activeAction === 'handle-tr') { posBR.x = xP; posTL.y = yP; }
+  else if (activeAction === 'handle-bl') { posTL.x = xP; posBR.y = yP; }
+  else if (activeAction === 'handle-br' || activeAction === 'new') { posBR.x = xP; posBR.y = yP; }
 
   dragStartPos = { x: clientX, y: clientY };
   updateHandleUI();
@@ -431,43 +497,44 @@ function handleMove(e) {
 
 function handleEnd() {
   if (activeAction === 'new' || (activeAction && activeAction.includes('handle'))) {
-    const x1 = Math.min(posTL.x, posBR.x);
-    const y1 = Math.min(posTL.y, posBR.y);
-    const x2 = Math.max(posTL.x, posBR.x);
-    const y2 = Math.max(posTL.y, posBR.y);
+    const x1 = Math.max(0, Math.min(100, Math.min(posTL.x, posBR.x)));
+    const y1 = Math.max(0, Math.min(100, Math.min(posTL.y, posBR.y)));
+    const x2 = Math.max(0, Math.min(100, Math.max(posTL.x, posBR.x)));
+    const y2 = Math.max(0, Math.min(100, Math.max(posTL.y, posBR.y)));
     posTL = { x: x1, y: y1 }; posBR = { x: x2, y: y2 };
     updateHandleUI();
   }
   activeAction = null;
-  document.getElementById('magnifier').style.display = 'none';
+  const magnifier = document.getElementById('magnifier');
+  if(magnifier) magnifier.style.display = 'none';
 }
 
 function updateHandleUI() {
-  document.getElementById('handle-tl').style.left = posTL.x + '%';
-  document.getElementById('handle-tl').style.top = posTL.y + '%';
-  document.getElementById('handle-tr').style.left = posBR.x + '%';
-  document.getElementById('handle-tr').style.top = posTL.y + '%';
-  document.getElementById('handle-bl').style.left = posTL.x + '%';
-  document.getElementById('handle-bl').style.top = posBR.y + '%';
-  document.getElementById('handle-br').style.left = posBR.x + '%';
-  document.getElementById('handle-br').style.top = posBR.y + '%';
+  const hTL = document.getElementById('handle-tl');
+  const hTR = document.getElementById('handle-tr');
+  const hBL = document.getElementById('handle-bl');
+  const hBR = document.getElementById('handle-br');
+  if(hTL) { hTL.style.left = posTL.x + '%'; hTL.style.top = posTL.y + '%'; }
+  if(hTR) { hTR.style.left = posBR.x + '%'; hTR.style.top = posTL.y + '%'; }
+  if(hBL) { hBL.style.left = posTL.x + '%'; hBL.style.top = posBR.y + '%'; }
+  if(hBR) { hBR.style.left = posBR.x + '%'; hBR.style.top = posBR.y + '%'; }
 }
 
 function updateMagnifier(e) {
   const magnifier = document.getElementById('magnifier');
   const container = document.getElementById('source-container');
   const overlay = document.getElementById('deck-grid-overlay');
-  const ctx = magnifier.getContext('2d');
-  if (!deckImg || !container) return;
+  if (!deckImg || !container || !magnifier || !overlay) return;
 
+  const ctx = magnifier.getContext('2d');
   const rect = container.getBoundingClientRect();
   const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
   const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
   const mx = clientX - rect.left;
   const my = clientY - rect.top;
   
-  magnifier.style.left = (mx - 80) + 'px';
-  magnifier.style.top = (my - 180) + 'px';
+  magnifier.style.left = (mx - 90) + 'px';
+  magnifier.style.top = (my - 200) + 'px';
   
   const zoom = 2.5;
   const size = 180;
@@ -477,10 +544,12 @@ function updateMagnifier(e) {
   ctx.scale(zoom, zoom);
   ctx.translate(-mx, -my);
   
-  const imgW = container.offsetWidth * imgVisualScale;
-  const imgH = (deckImg.naturalHeight / deckImg.naturalWidth) * imgW;
-  ctx.drawImage(deckImg, imgPos.x, imgPos.y, imgW, imgH);
-  ctx.drawImage(overlay, 0, 0, container.offsetWidth, container.offsetHeight);
+  ctx.save();
+  ctx.translate(imgPos.x, imgPos.y);
+  ctx.scale(imgVisualScale, imgVisualScale);
+  ctx.drawImage(deckImg, 0, 0);
+  ctx.drawImage(overlay, 0, 0);
+  ctx.restore();
   
   ctx.restore();
 }
@@ -489,24 +558,24 @@ function dist(x1, y1, x2, y2) { return Math.sqrt((x1-x2)**2 + (y1-y2)**2); }
 
 function resetAllPositions() {
   imgPos = { x: 0, y: 0 };
-  imgVisualScale = 1.0;
-  document.getElementById('source-zoom').value = 100;
-  document.getElementById('zoom-val').innerText = '100%';
+  imgVisualScale = 0.5;
+  const slider = document.getElementById('source-zoom');
+  if(slider) slider.value = 50;
+  const valDisp = document.getElementById('zoom-val');
+  if(valDisp) valDisp.innerText = '50%';
   posTL = { x: 10, y: 10 }; posBR = { x: 90, y: 90 };
-  const img = document.getElementById('deck-src-img');
-  if (img) { img.style.width = '100%'; img.style.transform = `translate(0px, 0px)`; }
+  updateSourceZoom();
   updateHandleUI();
   splitDeck();
 }
 
 /**
- * Image Processing
+ * Split Logic
  */
 function splitDeck() {
   const canvas = document.getElementById('split-canvas');
-  const container = document.getElementById('source-container');
-  const srcImg = document.getElementById('deck-src-img');
-  if (!deckImg || !canvas || !container || !srcImg) return;
+  const overlay = document.getElementById('deck-grid-overlay');
+  if (!deckImg || !canvas || !overlay) return;
 
   const cols = parseInt(document.getElementById('g-cols').value) || 1;
   const rows = parseInt(document.getElementById('g-rows').value) || 1;
@@ -515,21 +584,23 @@ function splitDeck() {
   const crop = parseInt(document.getElementById('crop-all').value) || 0;
 
   const W = deckImg.naturalWidth;
-  const scale = W / srcImg.offsetWidth;
+  const H = deckImg.naturalHeight;
 
-  const xStart = ( (container.offsetWidth * posTL.x / 100) - imgPos.x ) * scale;
-  const yStart = ( (container.offsetHeight * posTL.y / 100) - imgPos.y ) * scale;
-  const xEnd   = ( (container.offsetWidth * posBR.x / 100) - imgPos.x ) * scale;
-  const yEnd   = ( (container.offsetHeight * posBR.y / 100) - imgPos.y ) * scale;
+  overlay.width = W; overlay.height = H;
+  const oCtx = overlay.getContext('2d');
+  oCtx.clearRect(0,0,W,H);
+  oCtx.strokeStyle = '#ff4444';
+  oCtx.lineWidth = 4;
+
+  const xS = (W * posTL.x / 100);
+  const yS = (H * posTL.y / 100);
+  const xE = (W * posBR.x / 100);
+  const yE = (H * posBR.y / 100);
   
-  const areaW = xEnd - xStart;
-  const areaH = yEnd - yStart;
-  const totalXGap = (cols > 1) ? (cols - 1) * (W * xGap / 100) : 0;
-  const totalYGap = (rows > 1) ? (rows - 1) * (deckImg.naturalHeight * yGap / 100) : 0;
-  const cardW = (areaW - totalXGap) / cols;
-  const cardH = (areaH - totalYGap) / rows;
-
-  drawOverlay(posTL.x, posTL.y, ( (xEnd-xStart)/scale / container.offsetWidth ) * 100, ( (yEnd-yStart)/scale / container.offsetHeight ) * 100, cols, rows, xGap, yGap);
+  const aW = xE - xS;
+  const aH = yE - yS;
+  const cardW = (aW - ((cols-1) * (W * xGap/100))) / cols;
+  const cardH = (aH - ((rows-1) * (H * yGap/100))) / rows;
 
   if (cardW <= 0 || cardH <= 0) return;
   canvas.width = Math.max(1, cardW - crop * 2);
@@ -539,10 +610,11 @@ function splitDeck() {
   splitImages = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
+      const sx = xS + c * (cardW + (W * xGap / 100));
+      const sy = yS + r * (cardH + (H * yGap / 100));
+      oCtx.strokeRect(sx, sy, cardW, cardH);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const sx = xStart + c * (cardW + (W * xGap / 100)) + crop;
-      const sy = yStart + r * (cardH + (deckImg.naturalHeight * yGap / 100)) + crop;
-      ctx.drawImage(deckImg, sx, sy, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(deckImg, sx + crop, sy + crop, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
       splitImages.push({id: `sp_${r}_${c}`, src: canvas.toDataURL('image/jpeg', 0.85)});
     }
   }
@@ -550,61 +622,67 @@ function splitDeck() {
   renderSplitGrid();
 }
 
-function drawOverlay(x0, y0, totalWPercent, totalHPercent, cols, rows, xg, yg) {
-  const overlay = document.getElementById('deck-grid-overlay');
-  const container = document.getElementById('source-container');
-  if (!overlay || !container) return;
-  overlay.width = container.clientWidth;
-  overlay.height = container.clientHeight;
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
-  ctx.strokeStyle = '#ff4444';
-  ctx.lineWidth = 2;
-  const w = (totalWPercent / cols);
-  const h = (totalHPercent / rows);
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      ctx.strokeRect(
-        (x0 + c * (w + xg)) * overlay.width / 100,
-        (y0 + r * (h + yg)) * overlay.height / 100,
-        w * overlay.width / 100,
-        h * overlay.height / 100
-      );
-    }
-  }
-}
-
 /**
- * UI Rendering Functions
+ * Handlers
  */
-function onFileSingle(e) {
-  Array.from(e.target.files).forEach(file => {
+function onFileSingle(e) { processFiles(e.target.files, 'single'); e.target.value = ''; }
+function onFileDeck(e) { if(e.target.files[0]) loadDeck(e.target.files[0]); e.target.value = ''; }
+
+function processFiles(files, target) {
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
-    reader.onload = ev => { cards.push({ id: Math.random().toString(36), src: ev.target.result, qty: 1 }); renderMainList(); };
+    reader.onload = ev => {
+      if (target === 'single') {
+        cards.push({ id: Math.random().toString(36), src: ev.target.result, qty: 1 });
+        renderMainList();
+      } else { loadDeckImageFromSrc(ev.target.result); }
+    };
     reader.readAsDataURL(file);
   });
-  e.target.value = '';
 }
 
-function onFileDeck(e) {
-  if(!e.target.files[0]) return;
+function loadDeck(file) {
   const reader = new FileReader();
-  reader.onload = ev => {
-    const img = new Image();
-    img.onload = () => {
-      deckImg = img;
-      document.getElementById('deck-src-img').src = ev.target.result;
-      document.getElementById('deck-upload-area').style.display = 'none';
-      document.getElementById('deck-editor').style.display = 'block';
-      resetAllPositions();
-    };
-    img.src = ev.target.result;
+  reader.onload = ev => loadDeckImageFromSrc(ev.target.result);
+  reader.readAsDataURL(file);
+}
+
+function loadDeckImageFromSrc(src) {
+  const img = new Image();
+  img.onload = () => {
+    deckImg = img;
+    document.getElementById('deck-src-img').src = src;
+    document.getElementById('deck-upload-area').style.display = 'none';
+    document.getElementById('deck-editor').style.display = 'block';
+    resetAllPositions();
   };
-  reader.readAsDataURL(e.target.files[0]);
+  img.src = src;
+}
+
+async function loadFromUrl(url, target) {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    processFiles([blob], target);
+  } catch (e) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width; canvas.height = img.height;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      const dataUrl = canvas.toDataURL('image/jpeg');
+      if (target === 'single') { cards.push({ id: Math.random().toString(36), src: dataUrl, qty: 1 }); renderMainList(); }
+      else { loadDeckImageFromSrc(dataUrl); }
+    };
+    img.src = url;
+  }
 }
 
 function renderMainList() {
   const grid = document.getElementById('main-card-list');
+  if(!grid) return;
   grid.innerHTML = '';
   cards.forEach(card => {
     const div = document.createElement('div');
@@ -627,6 +705,7 @@ function removeCard(id) { cards = cards.filter(x => x.id !== id); renderMainList
 
 function renderSplitGrid() {
   const grid = document.getElementById('split-grid');
+  if(!grid) return;
   grid.innerHTML = '';
   splitImages.forEach(img => {
     const sel = splitSelected.has(img.id);
@@ -637,8 +716,7 @@ function renderSplitGrid() {
     grid.appendChild(div);
   });
   const btn = document.getElementById('btn-add-sel');
-  btn.disabled = splitSelected.size === 0;
-  btn.innerText = `${splitSelected.size} 枚のカードを追加`;
+  if(btn) { btn.disabled = splitSelected.size === 0; btn.innerText = `${splitSelected.size} 枚のカードを追加`; }
 }
 
 function selectAllSplit() { splitSelected = new Set(splitImages.map(s => s.id)); renderSplitGrid(); }
@@ -648,8 +726,23 @@ function addSelectedCards() {
 }
 
 /**
- * Print Engine
+ * Print & Export
  */
+function changePreviewPage(delta) {
+  const sizeSelect = document.getElementById('card-size');
+  if(!sizeSelect) return;
+  const [cw, ch] = sizeSelect.value.split(',').map(Number);
+  const margin = parseInt(document.getElementById('p-margin').value) || 8;
+  const gap = parseInt(document.getElementById('p-gap').value) || 2;
+  const cols = Math.floor((210 - margin * 2 + gap) / (cw + gap));
+  const rows = Math.floor((297 - margin * 2 + gap) / (ch + gap));
+  const perPage = cols * rows;
+  const expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
+  const totalPages = Math.ceil(expanded.length / perPage) || 1;
+  currentPreviewPage = Math.max(0, Math.min(totalPages - 1, currentPreviewPage + delta));
+  updatePrintPreview();
+}
+
 function updatePrintPreview() {
   const sizeSelect = document.getElementById('card-size');
   const paper = document.getElementById('preview-paper');
@@ -657,35 +750,44 @@ function updatePrintPreview() {
   const [cw, ch] = sizeSelect.value.split(',').map(Number);
   const margin = parseInt(document.getElementById('p-margin').value) || 8;
   const gap = parseInt(document.getElementById('p-gap').value) || 2;
+  const cols = Math.floor((210 - margin * 2 + gap) / (cw + gap));
+  const rows = Math.floor((297 - margin * 2 + gap) / (ch + gap));
+  const perPage = cols * rows;
   const scale = (paper.parentElement.clientWidth - 64) / 210; 
   paper.style.width = (210 * scale) + 'px'; paper.style.height = (297 * scale) + 'px';
   paper.innerHTML = '';
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      const x = (margin + c * (cw + gap)) * scale;
+      const y = (margin + r * (ch + gap)) * scale;
+      const guide = document.createElement('div');
+      guide.className = 'preview-slot-guide';
+      guide.style.cssText = `left:${x}px;top:${y}px;width:${cw*scale}px;height:${ch*scale}px;`;
+      paper.appendChild(guide);
+    }
+  }
   const expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
-  const cols = Math.floor((210 - margin * 2 + gap) / (cw + gap));
-  const rows = Math.floor((297 - margin * 2 + gap) / (ch + gap));
-  for (let i = 0; i < expanded.length; i++) {
-    const r = Math.floor(i / cols), c = i % cols;
-    if (r >= rows) break;
+  const totalPages = Math.ceil(expanded.length / perPage) || 1;
+  const pageDisplay = document.getElementById('page-display');
+  if(pageDisplay) pageDisplay.innerText = `Page ${currentPreviewPage + 1} / ${totalPages}`;
+  const startIdx = currentPreviewPage * perPage;
+  const endIdx = Math.min(startIdx + perPage, expanded.length);
+  for (let i = startIdx; i < endIdx; i++) {
+    const localIdx = i - startIdx;
+    const r = Math.floor(localIdx / cols), c = localIdx % cols;
     const x = (margin + c * (cw + gap)) * scale, y = (margin + r * (ch + gap)) * scale;
     const div = document.createElement('div');
     div.className = 'preview-card';
-    div.style.cssText = `left:${x}px;top:${y}px;width:${cw*scale}px;height:${ch*scale}px;`;
+    div.style.cssText = `left:${x}px;top:${y}px;width:${cw*scale}px;height:${ch*scale}px;z-index:2;`;
     div.innerHTML = `<img src="${expanded[i].src}">`;
     paper.appendChild(div);
   }
-  const printGrid = document.getElementById('print-card-grid');
-  printGrid.innerHTML = '';
-  cards.forEach(card => {
-    const div = document.createElement('div');
-    div.className = 'card-thumb';
-    div.innerHTML = `<img src="${card.src}"><div class="badge">×${card.qty}</div>`;
-    printGrid.appendChild(div);
-  });
   document.getElementById('btn-pdf').disabled = cards.length === 0;
 }
 
 async function exportPDF() {
   const btn = document.getElementById('btn-pdf');
+  if(!btn) return;
   btn.disabled = true; btn.innerText = 'PDF生成中...';
   const {jsPDF} = window.jspdf;
   const [cw, ch] = document.getElementById('card-size').value.split(',').map(Number);
@@ -693,8 +795,7 @@ async function exportPDF() {
   const gap = parseInt(document.getElementById('p-gap').value) || 2;
   const pdf = new jsPDF({unit: 'mm', format: 'a4'});
   const expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
-  const cols = Math.floor((210 - margin * 2 + gap) / (cw + gap));
-  const rows = Math.floor((297 - margin * 2 + gap) / (ch + gap));
+  const cols = Math.floor((210 - margin * 2 + gap) / (cw + gap)), rows = Math.floor((297 - margin * 2 + gap) / (ch + gap));
   const perPage = cols * rows;
   for (let p = 0; p < Math.ceil(expanded.length / perPage); p++) {
     if (p > 0) pdf.addPage();
@@ -711,24 +812,38 @@ async function exportPDF() {
     }
   }
   pdf.save('proproxy_export.pdf');
-  btn.disabled = false; btn.innerText = '📥 高解像度PDFを作成して保存';
+  btn.disabled = false; btn.innerText = '📥 全ページをPDFで保存';
 }
 
-/**
- * Event Listener Initialization
- */
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('source-container');
-  container.addEventListener('mousedown', handleStart);
-  container.addEventListener('touchstart', (e) => { e.preventDefault(); handleStart(e); }, {passive: false});
+  if(container) {
+    container.addEventListener('mousedown', handleStart);
+    container.addEventListener('touchstart', (e) => { handleStart(e); }, {passive: false});
+  }
+  ['single', 'deck'].forEach(type => {
+    const zone = document.getElementById(`drop-zone-${type}`);
+    if(!zone) return;
+    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => { zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault(); zone.classList.remove('drag-over');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) { processFiles(e.dataTransfer.files, type); } 
+      else {
+        const html = e.dataTransfer.getData('text/html');
+        const match = html && html.match(/src="([^"]+)"/);
+        if (match && match[1]) loadFromUrl(match[1], type);
+        else { const url = e.dataTransfer.getData('text/uri-list'); if (url) loadFromUrl(url, type); }
+      }
+    });
+  });
 });
 window.addEventListener('mousemove', handleMove);
 window.addEventListener('mouseup', handleEnd);
-window.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
+window.addEventListener('touchmove', (e) => { handleMove(e); }, {passive: false});
 window.addEventListener('touchend', handleEnd);
-window.onresize = () => { if(deckImg) { splitDeck(); updatePrintPreview(); } };
+window.onresize = () => { updatePrintPreview(); };
 window.onload = () => { renderMainList(); };
 </script>
-
 </body>
 </html>
