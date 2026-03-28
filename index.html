@@ -55,8 +55,25 @@ nav a:hover { color: var(--primary); }
 .btn-nav-start { background: var(--primary); color: #fff; padding: 8px 20px; border-radius: 8px; margin-left: 24px; transition: 0.3s; font-weight: 700; border: none; cursor: pointer; }
 .btn-nav-start:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--primary-glow); }
 
+/* 広告エリアの設定 (300x250に合わせて調整) */
+.ad-container {
+  margin-top: 72px; /* ヘッダーの高さ */
+  padding: 20px;
+  text-align: center;
+  background: rgba(24, 24, 27, 0.4);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 270px;
+}
+.ad-container img {
+  max-width: 100%;
+  height: auto;
+}
+
 .hero {
-  padding: 180px 20px 100px;
+  padding: 80px 20px 80px;
   text-align: center;
   background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #09090b 70%);
 }
@@ -84,7 +101,7 @@ nav a:hover { color: var(--primary); }
 .app-section { padding: 120px 24px; background: #0c0c14; border-top: 1px solid var(--border); }
 .app-wrapper { max-width: 1400px; margin: 0 auto; }
 
-.tool-header { margin-bottom: 60px; text-align: center; } /* マージンを少し増やして被りを防ぐ */
+.tool-header { margin-bottom: 60px; text-align: center; }
 .tool-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
 
 .tabs { display: flex; background: #1a1a2e; border-radius: 16px; padding: 8px; margin-bottom: 40px; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
@@ -223,14 +240,7 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
   header { padding: 12px 24px; }
   nav { display: none; }
   .source-container { height: 50vh; }
-}
-/* 広告エリアのスタイル */
-.ad-container {
-  width: 100%;
-  text-align: center;
-  padding: 20px 0;
-  background: var(--bg-dark);
-  margin-top: 80px; /* ヘッダーに被らないように調整 */
+  .ad-container { margin-top: 60px; min-height: 270px; }
 }
 </style>
 </head>
@@ -243,9 +253,14 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
     <a href="#tool" class="btn-nav-start">今すぐ作成</a>
   </nav>
 </header>
-<a href="https://px.a8.net/svt/ejp?a8mat=4AZQGP+96FLIQ+49YI+BXQOH" rel="nofollow">
-<img border="0" width="100" height="60" alt="" src="https://www25.a8.net/svt/bgt?aid=260328121555&wid=001&eno=01&mid=s00000019953002005000&mc=1"></a>
-<img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4AZQGP+96FLIQ+49YI+BXQOH" alt="">
+
+<!-- 広告エリア (300x250 新コード) -->
+<div class="ad-container">
+  <a href="https://px.a8.net/svt/ejp?a8mat=4AZQGP+96FLIQ+49YI+BYT9D" rel="nofollow">
+  <img border="0" width="300" height="250" alt="" src="https://www22.a8.net/svt/bgt?aid=260328121555&wid=001&eno=01&mid=s00000019953002010000&mc=1"></a>
+  <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4AZQGP+96FLIQ+49YI+BYT9D" alt="">
+</div>
+
 <section class="hero">
   <h2>そのデッキ画像、<br>一瞬で印刷用PDFに。</h2>
   <p>ProProxy（プロプロキシ）は、TCGプレイヤーのための究極のプロキシー作成ツールです。精密なハンドル操作で完璧な切り分けを実現します。</p>
@@ -506,6 +521,7 @@ function applySplitPreset(type) {
 function handleStart(e) {
   if (!deckImg) return;
   const container = document.getElementById('source-container');
+  if (!container) return;
   const rect = container.getBoundingClientRect();
   const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
   const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
@@ -533,6 +549,7 @@ function handleStart(e) {
 function handleMove(e) {
   if (!activeAction || !deckImg) return;
   const container = document.getElementById('source-container');
+  if (!container) return;
   const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
   const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
   const rect = container.getBoundingClientRect();
@@ -860,8 +877,7 @@ async function exportPDF() {
   if(!btn) return;
   btn.disabled = true; btn.innerText = 'PDF生成中...';
   const {jsPDF} = window.jspdf;
-  const sizeSelect = document.getElementById('card-size');
-  const [cw, ch] = sizeSelect.value.split(',').map(Number);
+  const [cw, ch] = document.getElementById('card-size').value.split(',').map(Number);
   const margin = parseInt(document.getElementById('p-margin').value) || 8;
   const gap = parseInt(document.getElementById('p-gap').value) || 2;
   const pdf = new jsPDF({unit: 'mm', format: 'a4'});
