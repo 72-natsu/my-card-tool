@@ -67,20 +67,25 @@ nav a:hover { color: var(--primary); }
 .btn-p { background: var(--primary); color: #fff; box-shadow: 0 10px 30px var(--primary-glow); }
 .btn-p:hover { background: #6b59e6; transform: translateY(-3px) scale(1.05); }
 
+/* 使い方ガイドセクション */
 .usage-section { padding: 80px 20px; background: #0c0c14; border-top: 1px solid var(--border); }
-.usage-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; }
+.usage-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
 .step-card { background: var(--bg-card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); position: relative; }
 .step-num { 
-  position: absolute; top: -20px; left: 40px; 
-  width: 44px; height: 44px; background: var(--primary); color: #fff; 
+  position: absolute; top: -22px; left: 24px; 
+  width: 46px; height: 46px; background: var(--primary); color: #fff; 
   border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-  font-weight: 900; font-size: 20px; box-shadow: 0 4px 15px var(--primary-glow);
+  font-weight: 900; font-size: 22px; box-shadow: 0 4px 15px var(--primary-glow);
+  z-index: 5;
 }
-.step-card h3 { margin-top: 10px; margin-bottom: 16px; font-size: 20px; color: #fff; }
+.step-card h3 { margin-top: 18px; margin-bottom: 16px; font-size: 20px; color: #fff; }
 .step-card p { color: var(--text-muted); font-size: 14px; line-height: 1.7; }
 
 .app-section { padding: 120px 24px; background: #0c0c14; border-top: 1px solid var(--border); }
 .app-wrapper { max-width: 1400px; margin: 0 auto; }
+
+.tool-header { margin-bottom: 60px; text-align: center; } /* マージンを少し増やして被りを防ぐ */
+.tool-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
 
 .tabs { display: flex; background: #1a1a2e; border-radius: 16px; padding: 8px; margin-bottom: 40px; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
 .tab-btn { flex: 1; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; background: transparent; color: #666; transition: all 0.3s; }
@@ -179,7 +184,7 @@ nav a:hover { color: var(--primary); }
 .split-card.selected { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 .split-card img, .card-thumb img { width: 100%; height: 100%; object-fit: contain; }
 .sel-badge { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: 800; opacity: 0; }
-.split-card.selected .sel-badge { opacity: 1; }
+.split-card.selected .sel-badge { opacity: 1; transform: scale(1); }
 
 .card-thumb .badge { position: absolute; top: 10px; left: 10px; background: var(--primary); color: white; font-size: 13px; font-weight: 900; padding: 4px 10px; border-radius: 8px; z-index: 5; }
 .card-thumb .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; gap: 20px; }
@@ -317,9 +322,11 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
         </div>
 
         <div class="source-container" id="source-container" tabindex="0">
+          <!-- ワークスペース（独立） -->
           <div class="workspace" id="workspace">
             <img id="deck-src-img" class="deck-source-img">
           </div>
+          <!-- 切り取り枠（独立） -->
           <canvas id="deck-grid-overlay"></canvas>
           <div id="handle-tl" class="grid-handle"></div>
           <div id="handle-tr" class="grid-handle"></div>
@@ -436,7 +443,7 @@ function removeDeckImage() {
 }
 
 /**
- * Zoom Logic (Updated for Keyboard Input Support)
+ * Zoom Logic
  */
 function updateSourceZoom(source) {
   const slider = document.getElementById('source-zoom');
@@ -451,7 +458,6 @@ function updateSourceZoom(source) {
   } else {
     val = parseInt(input.value);
     if (isNaN(val)) return;
-    // Clamping
     if (val < 20) val = 20;
     if (val > 400) val = 400;
     slider.value = val;
@@ -485,7 +491,7 @@ function applySplitPreset(type) {
 }
 
 /**
- * Interaction (Handles Only for Grid)
+ * Interaction
  */
 function handleStart(e) {
   if (!deckImg) return;
@@ -551,7 +557,8 @@ function handleEnd() {
     updateHandleUI();
   }
   activeAction = null;
-  document.getElementById('magnifier').style.display = 'none';
+  const magnifier = document.getElementById('magnifier');
+  if(magnifier) magnifier.style.display = 'none';
 }
 
 function updateHandleUI() {
@@ -801,9 +808,11 @@ function updatePrintPreview() {
   const [cw, ch] = sizeSelect.value.split(',').map(Number);
   const margin = parseInt(document.getElementById('p-margin').value) || 8;
   const gap = parseInt(document.getElementById('p-gap').value) || 2;
+  
   const cols = Math.floor((210 - margin * 2 + gap) / (cw + gap));
   const rows = Math.floor((297 - margin * 2 + gap) / (ch + gap));
   const perPage = cols * rows;
+
   const scale = (paper.parentElement.clientWidth - 64) / 210; 
   paper.style.width = (210 * scale) + 'px'; paper.style.height = (297 * scale) + 'px';
   paper.innerHTML = '';
@@ -841,7 +850,8 @@ async function exportPDF() {
   if(!btn) return;
   btn.disabled = true; btn.innerText = 'PDF生成中...';
   const {jsPDF} = window.jspdf;
-  const [cw, ch] = document.getElementById('card-size').value.split(',').map(Number);
+  const sizeSelect = document.getElementById('card-size');
+  const [cw, ch] = sizeSelect.value.split(',').map(Number);
   const margin = parseInt(document.getElementById('p-margin').value) || 8;
   const gap = parseInt(document.getElementById('p-gap').value) || 2;
   const pdf = new jsPDF({unit: 'mm', format: 'a4'});
