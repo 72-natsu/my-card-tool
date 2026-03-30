@@ -1,9 +1,11 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google-site-verification" content="ukRUPPyodkzOmoVOvQbp-ceaLwcpBCDhMbnDvQbWQhg">
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3653322198841230" crossorigin="anonymous"></script>
 <title>ProProxy | プロ級プロキシーカードメーカー</title>
 <!-- 外部ライブラリ: PDF生成用 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -87,6 +89,7 @@ nav a:hover { color: var(--primary); }
 }
 .hero h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; line-height: 1.1; margin-bottom: 24px; color: #fff; letter-spacing: -2px; }
 .hero p { font-size: 18px; color: var(--text-muted); max-width: 800px; margin: 0 auto 48px; }
+.hero-btns { display: flex; gap: 20px; justify-content: center; }
 .btn-hero { padding: 16px 36px; border-radius: 12px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
 .btn-p { background: var(--primary); color: #fff; box-shadow: 0 10px 30px var(--primary-glow); }
 
@@ -141,7 +144,7 @@ nav a:hover { color: var(--primary); }
 .qty-btn:hover { background: #9283f9; transform: scale(1.1); }
 .qty-val { font-size: 28px; font-weight: 900; color: #fff; min-width: 36px; text-align: center; }
 
-/* 切り分けプレビューセクションの修正 */
+/* 切り分けプレビューセクション */
 .split-preview-section {
   margin-top: 40px;
   padding: 30px;
@@ -590,6 +593,7 @@ function renderSplitGrid() {
   });
   const btn = document.getElementById('btn-add-sel'); if(btn) { btn.disabled = splitSelected.size === 0; btn.innerText = `${splitSelected.size} 枚追加`; }
 }
+
 function selectAllSplit() { splitSelected = new Set(splitImages.map(s => s.id)); renderSplitGrid(); }
 function addSelectedCards() { splitImages.filter(s => splitSelected.has(s.id)).forEach(s => cards.push({ id: Math.random().toString(36), src: s.src, qty: 1 })); renderMainList(); switchTab('single'); }
 
