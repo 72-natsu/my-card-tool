@@ -115,7 +115,7 @@ nav a:hover { color: var(--primary); }
 .app-wrapper { max-width: 1400px; margin: 0 auto; }
 
 .tabs { display: flex; background: #1a1a2e; border-radius: 16px; padding: 8px; margin-bottom: 40px; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); overflow-x: auto; }
-.tab-btn { flex: 1; padding: 16px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; background: transparent; color: #666; transition: 0.2s; white-space: nowrap; }
+.tab-btn { flex: 1; padding: 16px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; background: transparent; color: #666; transition: all 0.3s; white-space: nowrap; }
 .tab-btn.active { background: var(--primary); color: white; }
 
 .tab-panel { display: none; }
@@ -135,8 +135,8 @@ nav a:hover { color: var(--primary); }
 .zoom-input-wrapper input { width: 70px; padding: 10px; border-radius: 10px; border: 1px solid #333; background: #0d1b2a; color: #fff; font-weight: 900; text-align: center; }
 
 /* カード & コントロール */
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px; }
-.card-thumb { border-radius: 16px; overflow: hidden; aspect-ratio: 63/88; position: relative; background: #000; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; margin-bottom: 40px; }
+.card-thumb { border-radius: 16px; overflow: hidden; aspect-ratio: 63/88; position: relative; background: #000; border: 1px solid #333; }
 .card-thumb img { width: 100%; height: 100%; object-fit: contain; }
 .card-thumb .badge { position: absolute; top: 10px; left: 10px; background: var(--primary); color: white; font-size: 13px; font-weight: 900; padding: 4px 10px; border-radius: 8px; z-index: 5; }
 .card-thumb .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; gap: 20px; }
@@ -147,7 +147,52 @@ nav a:hover { color: var(--primary); }
 .qty-btn:hover { background: #9283f9; transform: scale(1.1); }
 .qty-val { font-size: 28px; font-weight: 900; color: #fff; min-width: 36px; text-align: center; }
 
-/* 印刷プレビューエリア（全体が見えるように最適化） */
+/* 切り分けグリッド */
+.split-preview-section {
+  margin-top: 40px;
+  padding: 30px;
+  background: rgba(24, 24, 27, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.split-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+  gap: 16px; 
+  margin-top: 24px; 
+}
+.split-card { 
+  border-radius: 12px; 
+  overflow: hidden; 
+  aspect-ratio: 63/88; 
+  position: relative; 
+  border: 2px solid #333; 
+  cursor: pointer; 
+  background: #000; 
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.split-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+}
+.split-card.selected { 
+  border-color: var(--primary); 
+  box-shadow: 0 0 20px var(--primary-glow); 
+}
+.split-card img { width: 100%; height: 100%; object-fit: cover; }
+.sel-badge { 
+  position: absolute; top: 8px; right: 8px; 
+  width: 26px; height: 26px; border-radius: 50%; 
+  background: var(--primary); display: flex; 
+  align-items: center; justify-content: center; 
+  font-size: 14px; color: white; font-weight: 800; 
+  opacity: 0; transform: scale(0.5);
+  transition: 0.2s;
+  z-index: 2;
+}
+.split-card.selected .sel-badge { opacity: 1; transform: scale(1); }
+
+/* 印刷プレビューエリア */
 .preview-section { 
   background: #16213e; 
   border-radius: 24px; 
@@ -183,11 +228,21 @@ nav a:hover { color: var(--primary); }
 .preset-split-btn { flex: 1; min-width: 150px; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #27272a; color: #fff; cursor: pointer; font-size: 13px; font-weight: 700; transition: 0.2s; text-align: center; }
 .preset-split-btn.active { background: var(--primary); border-color: var(--primary); }
 
+/* モーダル/メッセージ */
+.custom-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 5000;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-content {
+  background: var(--bg-card); border: 1px solid var(--border); padding: 32px;
+  border-radius: 20px; max-width: 400px; width: 100%; text-align: center;
+}
+
 footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--border); background: #09090b; color: #555; }
 .warning-text { color: var(--accent); font-weight: 700; margin-bottom: 12px; font-size: 14px; display: block; }
 
-.btn-pdf { width: 100%; padding: 24px; border-radius: 18px; background: linear-gradient(135deg, var(--primary), #5b4fcf); color: white; font-weight: 900; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 15px 40px var(--primary-glow); }
-.btn-pdf:disabled { opacity: 0.4; }
+.btn-pdf { width: 100%; padding: 24px; border-radius: 18px; background: linear-gradient(135deg, var(--primary), #5b4fcf); color: white; font-weight: 900; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 15px 40px var(--primary-glow); transition: 0.3s; }
+.btn-pdf:disabled { opacity: 0.4; pointer-events: none; }
 
 @media (max-width: 768px) {
   header { padding: 12px 24px; }
@@ -248,17 +303,27 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
       <button class="tab-btn active" id="t-single" onclick="switchTab('single')">📁 1枚追加</button>
       <button class="tab-btn" id="t-deck" onclick="switchTab('deck')">🗂️ デッキ切り分け</button>
       <button class="tab-btn" id="t-print" onclick="switchTab('print')">🖨️ 印刷設定</button>
+      <button class="tab-btn" id="t-blog" onclick="switchTab('blog')">📝 ブログ</button>
     </div>
 
+    <!-- 1枚ずつ追加 -->
     <div class="tab-panel active" id="panel-single">
       <div class="upload-zone" id="drop-zone-single" onclick="document.getElementById('file-single').click()">
         <input type="file" id="file-single" accept="image/*" multiple onchange="onFileSingle(event)" style="display:none;">
         <span style="font-size: 48px; display:block; margin-bottom:12px;">📁</span>
         <div style="font-weight:700;">ここに画像をドロップ、またはクリック</div>
       </div>
+      
+      <!-- 新設：リスト管理バー -->
+      <div id="list-controls" style="display:none; justify-content:space-between; align-items:center; margin-bottom:20px; padding: 0 10px;">
+        <h3 style="font-size:18px;">追加済みのカード</h3>
+        <button onclick="confirmClearList()" style="background:rgba(239,68,68,0.1); color:var(--accent); border:1px solid rgba(239,68,68,0.2); padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;">リストを全て削除</button>
+      </div>
+      
       <div class="card-grid" id="main-card-list"></div>
     </div>
 
+    <!-- デッキ切り分け -->
     <div class="tab-panel" id="panel-deck">
       <div id="deck-upload-area" class="upload-zone" onclick="document.getElementById('file-deck').click()">
         <input type="file" id="file-deck" accept="image/*" onchange="onFileDeck(event)" style="display:none;">
@@ -294,11 +359,19 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
           <div class="gs-field"><label>縁削px</label><input type="number" id="crop-all" value="2" oninput="splitDeck()"></div>
           <div class="gs-field"><label>&nbsp;</label><button class="layer-btn" style="padding:10px;" onclick="resetAllPositions()">リセット</button></div>
         </div>
-        <div class="split-grid" id="split-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; margin-top:24px;"></div>
-        <button class="btn-pdf" id="btn-add-sel" onclick="addSelectedCards()" disabled style="margin-top:24px;">選択したカードをリストに追加</button>
+        
+        <div class="split-preview-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-size:18px; color:var(--text-main);">切り分けプレビュー</h3>
+            <button class="layer-btn" style="max-width:120px; padding:8px; font-size:12px; background:#222;" onclick="selectAllSplit()">全て選択</button>
+          </div>
+          <div class="split-grid" id="split-grid"></div>
+          <button class="btn-pdf" id="btn-add-sel" onclick="addSelectedCards()" disabled style="margin-top:24px; font-size: 16px; padding: 16px;">選択したカードをリストに追加</button>
+        </div>
       </div>
     </div>
 
+    <!-- 印刷設定 -->
     <div class="tab-panel" id="panel-print">
       <div class="grid-settings" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
         <div class="gs-field"><label>カードサイズ</label>
@@ -316,13 +389,44 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
           <span class="page-info" id="page-display" style="font-weight:800; color:var(--primary); font-size: 18px;">Page 1 / 1</span>
           <button class="page-nav-btn" onclick="changePreviewPage(1)" style="padding:10px 20px; border-radius:8px; background:#27272a; color:#fff; border:1px solid #444; cursor:pointer;">次 ▶</button>
         </div>
-        <!-- プレビュー用紙 -->
         <div id="preview-paper" class="preview-paper"></div>
       </div>
       <button class="btn-pdf" id="btn-pdf" onclick="exportPDF()" disabled style="margin-top:40px;">📥 全ページをPDFで保存</button>
     </div>
+
+    <!-- ブログ -->
+    <div class="tab-panel" id="panel-blog">
+      <div id="blog-editor" style="display:none;" class="blog-editor-container">
+        <h3>📝 記事を作成・編集</h3>
+        <input type="hidden" id="blog-edit-id">
+        <div class="blog-field"><label>タイトル</label><input type="text" id="blog-title"></div>
+        <div class="blog-field"><label>カテゴリー</label><select id="blog-category"><option value="攻略">攻略</option><option value="日記">日記</option><option value="お知らせ">お知らせ</option></select></div>
+        <div class="blog-field"><label>本文</label><textarea id="blog-body"></textarea></div>
+        <div class="blog-actions"><button class="btn-save" onclick="saveBlogPost()">公開する</button><button class="btn-cancel" onclick="cancelBlogEdit()">キャンセル</button></div>
+      </div>
+      <div id="blog-management">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+          <h3>最新の投稿</h3>
+          <button class="btn-nav-start" id="btn-new-post" style="display:none;" onclick="showBlogEditor()">+ 新規投稿</button>
+        </div>
+        <div id="blog-posts-list">記事を読み込み中...</div>
+      </div>
+      <div style="text-align:right; margin-top:40px;"><button class="btn-admin" id="btn-admin-login" onclick="promptAdminLogin()">管理者ログイン</button></div>
+    </div>
   </div>
 </section>
+
+<!-- 確認用モーダル -->
+<div id="confirm-modal" class="custom-modal">
+  <div class="modal-content">
+    <h3 style="margin-bottom:16px;">リストをクリアしますか？</h3>
+    <p style="color:var(--text-muted); margin-bottom:24px;">追加された全てのカードが削除されます。この操作は取り消せません。</p>
+    <div style="display:flex; gap:12px;">
+      <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:10px; border:1px solid #444; background:none; color:#fff; cursor:pointer;">キャンセル</button>
+      <button onclick="clearAllCards()" style="flex:1; padding:12px; border-radius:10px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer;">全て削除</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <span class="warning-text">※プロキシカードは公式大会等では使用できません。個人利用に限定してお楽しみください。</span>
@@ -335,16 +439,111 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
 /**
  * State & Logic
  */
-let cards = [], splitImages = [], splitSelected = new Set();
+const ADMIN_SECRET = "admin123";
+let isAdmin = false, blogPosts = [], cards = [], splitImages = [], splitSelected = new Set();
 let deckImg = null, currentPreviewPage = 0, layerMode = 'image'; 
 let imgPos = { x: 0, y: 0 }, imgVisualScale = 0.5;
 let posTL = { x: 10, y: 10 }, posBR = { x: 90, y: 90 };
 let activeAction = null, dragStartPos = { x: 0, y: 0 };
 
+async function initBlog() {
+  const api = window.firebaseApi;
+  if (!api) return;
+  try {
+    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+      await api.signInWithCustomToken(api.auth, __initial_auth_token);
+    } else { await api.signInAnonymously(api.auth); }
+  } catch (e) {}
+  api.onAuthStateChanged(api.auth, (user) => {
+    if (!user) return;
+    const postsRef = api.collection(api.db, 'artifacts', api.appId, 'public', 'data', 'blogPosts');
+    api.onSnapshot(postsRef, (snapshot) => {
+      blogPosts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      blogPosts.sort((a, b) => b.timestamp - a.timestamp);
+      renderBlogList();
+    }, (err) => console.error(err));
+  });
+}
+
+function promptAdminLogin() {
+  const pass = prompt("合言葉を入力してください:");
+  if (pass === ADMIN_SECRET) {
+    isAdmin = true;
+    document.getElementById('btn-new-post').style.display = 'block';
+    document.getElementById('btn-admin-login').innerText = "管理者モード実行中";
+    document.getElementById('btn-admin-login').disabled = true;
+    renderBlogList();
+  } else if(pass !== null) alert("違います。");
+}
+
+function showBlogEditor(postId = null) {
+  if(!isAdmin) return;
+  document.getElementById('blog-editor').style.display = 'block';
+  document.getElementById('blog-management').style.display = 'none';
+  if (postId) {
+    const post = blogPosts.find(p => p.id === postId);
+    if (post) {
+      document.getElementById('blog-edit-id').value = post.id;
+      document.getElementById('blog-title').value = post.title;
+      document.getElementById('blog-category').value = post.category;
+      document.getElementById('blog-body').value = post.body;
+    }
+  } else {
+    document.getElementById('blog-edit-id').value = '';
+    document.getElementById('blog-title').value = '';
+    document.getElementById('blog-body').value = '';
+  }
+}
+
+function cancelBlogEdit() {
+  document.getElementById('blog-editor').style.display = 'none';
+  document.getElementById('blog-management').style.display = 'block';
+}
+
+async function saveBlogPost() {
+  if(!isAdmin) return;
+  const api = window.firebaseApi;
+  const id = document.getElementById('blog-edit-id').value || Date.now().toString();
+  const title = document.getElementById('blog-title').value;
+  const category = document.getElementById('blog-category').value;
+  const body = document.getElementById('blog-body').value;
+  if (!title || !body) return alert("入力してください");
+  try {
+    await api.setDoc(api.doc(api.db, 'artifacts', api.appId, 'public', 'data', 'blogPosts', id), {
+      title, category, body, timestamp: Date.now(), date: new Date().toLocaleDateString('ja-JP')
+    });
+    cancelBlogEdit();
+  } catch(e) { alert("保存権限がありません。"); }
+}
+
+async function deleteBlogPost(id) {
+  if(!isAdmin) return;
+  if (confirm("削除しますか？")) {
+    try { await window.firebaseApi.deleteDoc(window.firebaseApi.doc(window.firebaseApi.db, 'artifacts', window.firebaseApi.appId, 'public', 'data', 'blogPosts', id)); } catch(e) {}
+  }
+}
+
+function renderBlogList() {
+  const list = document.getElementById('blog-posts-list');
+  if(!list) return;
+  list.innerHTML = blogPosts.length === 0 ? '<p style="text-align:center; padding:40px;">記事はありません。</p>' : '';
+  blogPosts.forEach(post => {
+    const card = document.createElement('div'); card.className = 'blog-card';
+    card.innerHTML = `<div style="font-size:12px; color:var(--primary); margin-bottom:8px;">${post.date} | ${post.category}</div>
+      <h4>${post.title}</h4><div class="content">${post.body}</div>
+      ${isAdmin ? `<div style="display:flex; gap:12px; margin-top:16px; border-top:1px solid #222; padding-top:12px;">
+        <button style="flex:1; padding:8px; border-radius:6px; border:none; background:#2a2a4a; color:#fff; cursor:pointer;" onclick="showBlogEditor('${post.id}')">編集</button>
+        <button style="flex:1; padding:8px; border-radius:6px; border:none; background:rgba(239,68,68,0.1); color:var(--accent); cursor:pointer;" onclick="deleteBlogPost('${post.id}')">削除</button>
+      </div>` : ''}`;
+    list.appendChild(card);
+  });
+}
+
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.id === `t-${tab}`));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `panel-${tab}`));
   if(tab === 'print') { currentPreviewPage = 0; updatePrintPreview(); }
+  if(tab === 'blog') renderBlogList();
 }
 
 function setLayerMode(mode) {
@@ -462,6 +661,7 @@ function splitDeck() {
   const boxXS = (posTL.x / 100) * container.offsetWidth, boxYS = (posTL.y / 100) * container.offsetHeight, boxXE = (posBR.x / 100) * container.offsetWidth, boxYE = (posBR.y / 100) * container.offsetHeight;
   const boxW = boxXE - boxXS, boxH = boxYE - boxYS;
   const unitW = (boxW - ( (cols-1) * (boxW * xGap/100) )) / cols, unitH = boxH / rows;
+  if (unitW <= 2 || unitH <= 2) return;
   const dispW = container.offsetWidth * imgVisualScale, natRatio = deckImg.naturalWidth / dispW;
   splitImages = [];
   for (let r = 0; r < rows; r++) {
@@ -501,7 +701,15 @@ function removeDeckImage() { deckImg = null; document.getElementById('deck-src-i
 
 function renderMainList() {
   const grid = document.getElementById('main-card-list'); if(!grid) return;
+  const bar = document.getElementById('list-controls');
   grid.innerHTML = '';
+  
+  if (cards.length > 0) {
+    bar.style.display = 'flex';
+  } else {
+    bar.style.display = 'none';
+  }
+
   cards.forEach(card => {
     const div = document.createElement('div'); div.className = 'card-thumb';
     div.innerHTML = `<img src="${card.src}"><div class="badge">×${card.qty}</div>
@@ -515,18 +723,34 @@ function renderMainList() {
 }
 function updateQty(id, d) { const c = cards.find(x => x.id === id); if(c) c.qty = Math.max(1, c.qty + d); renderMainList(); updatePrintPreview(); }
 function removeCard(id) { cards = cards.filter(x => x.id !== id); renderMainList(); updatePrintPreview(); }
+
+// 新設：一括クリア機能
+function confirmClearList() {
+  document.getElementById('confirm-modal').style.display = 'flex';
+}
+function closeModal() {
+  document.getElementById('confirm-modal').style.display = 'none';
+}
+function clearAllCards() {
+  cards = [];
+  renderMainList();
+  updatePrintPreview();
+  closeModal();
+}
+
 function renderSplitGrid() {
   const grid = document.getElementById('split-grid'); if(!grid) return;
   grid.innerHTML = '';
   splitImages.forEach(img => {
     const sel = splitSelected.has(img.id);
     const div = document.createElement('div'); div.className = 'split-card' + (sel ? ' selected' : '');
-    div.innerHTML = `<img src="${img.src}"><div class="sel-badge">✓</div>`;
+    div.innerHTML = `<div class="sel-badge">✓</div><img src="${img.src}">`;
     div.onclick = () => { if(splitSelected.has(img.id)) splitSelected.delete(img.id); else splitSelected.add(img.id); renderSplitGrid(); };
     grid.appendChild(div);
   });
   const btn = document.getElementById('btn-add-sel'); if(btn) { btn.disabled = splitSelected.size === 0; btn.innerText = `${splitSelected.size} 枚追加`; }
 }
+
 function selectAllSplit() { splitSelected = new Set(splitImages.map(s => s.id)); renderSplitGrid(); }
 function addSelectedCards() { splitImages.filter(s => splitSelected.has(s.id)).forEach(s => cards.push({ id: Math.random().toString(36), src: s.src, qty: 1 })); renderMainList(); switchTab('single'); }
 
@@ -542,31 +766,21 @@ function updatePrintPreview() {
   if (!sizeSelect || !paper) return;
   const [cw, ch] = sizeSelect.value.split(',').map(Number);
   const margin = 8, gap = 2, cols = 3, rows = 3;
-  
-  // プレビュー用紙を全体が見えるようにスケーリング (幅と高さの小さい方を基準にする)
   const container = paper.parentElement;
   const containerW = container.clientWidth - 40;
-  const containerH = window.innerHeight * 0.7; // 画面高の70%に収める
-  
-  const scaleW = containerW / 210;
-  const scaleH = containerH / 297;
+  const containerH = window.innerHeight * 0.7;
+  const scaleW = containerW / 210, scaleH = containerH / 297;
   const scale = Math.min(scaleW, scaleH);
-  
-  paper.style.width = (210 * scale) + 'px'; 
-  paper.style.height = (297 * scale) + 'px'; 
-  paper.innerHTML = '';
-
+  paper.style.width = (210 * scale) + 'px'; paper.style.height = (297 * scale) + 'px'; paper.innerHTML = '';
   for (let r = 0; r < 3; r++) { for (let c = 0; c < 3; c++) {
     const x = (margin + c * (cw + gap)) * scale, y = (margin + r * (ch + gap)) * scale;
     const guide = document.createElement('div'); guide.className = 'preview-slot-guide';
     guide.style.cssText = `left:${x}px;top:${y}px;width:${cw*scale}px;height:${ch*scale}px;`;
     paper.appendChild(guide);
   }}
-  
   const expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
   const totalPages = Math.ceil(expanded.length / 9) || 1;
   const pageDisplay = document.getElementById('page-display'); if(pageDisplay) pageDisplay.innerText = `Page ${currentPreviewPage + 1} / ${totalPages}`;
-  
   const startIdx = currentPreviewPage * 9, endIdx = Math.min(startIdx + 9, expanded.length);
   for (let i = startIdx; i < endIdx; i++) {
     const localIdx = i - startIdx, r = Math.floor(localIdx / cols), c = localIdx % cols;
@@ -623,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if(container) { container.addEventListener('mousedown', handleStart); container.addEventListener('touchstart', (e) => { handleStart(e); }, {passive: false}); }
   
   ['single', 'deck'].forEach(type => {
-    const zone = document.getElementById(`drop-zone-${type === 'single' ? 'single' : 'deck-upload-area'}`);
+    const zone = document.getElementById(type === 'single' ? 'drop-zone-single' : 'deck-upload-area');
     if(!zone) return;
     zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
     zone.addEventListener('dragleave', () => { zone.classList.remove('drag-over'); });
@@ -637,6 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+  initBlog();
 });
 window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', handleEnd);
 window.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
