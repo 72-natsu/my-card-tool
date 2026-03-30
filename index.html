@@ -7,24 +7,19 @@
 <title>ProProxy | プロ級プロキシーカードメーカー</title>
 <!-- 外部ライブラリ: PDF生成用 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Firebase SDK -->
+<!-- Firebase SDK (認証用) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
   import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-  // 環境変数からの設定取得
   const firebaseConfig = JSON.parse(__firebase_config);
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
   const appId = typeof __app_id !== 'undefined' ? __app_id : 'pro-proxy-maker';
 
-  // グローバルAPIの公開
-  window.firebaseApi = { 
-    db, collection, doc, setDoc, getDocs, deleteDoc, onSnapshot, query,
-    appId, auth, signInAnonymously, signInWithCustomToken, onAuthStateChanged 
-  };
+  window.firebaseApi = { appId, auth, signInAnonymously, signInWithCustomToken, onAuthStateChanged };
 </script>
 
 <!-- フォント読み込み -->
@@ -92,8 +87,7 @@ nav a:hover { color: var(--primary); }
 }
 .hero h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; line-height: 1.1; margin-bottom: 24px; color: #fff; letter-spacing: -2px; }
 .hero p { font-size: 18px; color: var(--text-muted); max-width: 800px; margin: 0 auto 48px; }
-.hero-btns { display: flex; gap: 20px; justify-content: center; }
-.btn-hero { padding: 16px 36px; border-radius: 12px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; text-decoration: none; }
+.btn-hero { padding: 16px 36px; border-radius: 12px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
 .btn-p { background: var(--primary); color: #fff; box-shadow: 0 10px 30px var(--primary-glow); }
 
 /* --- 使い方ガイド --- */
@@ -147,7 +141,7 @@ nav a:hover { color: var(--primary); }
 .qty-btn:hover { background: #9283f9; transform: scale(1.1); }
 .qty-val { font-size: 28px; font-weight: 900; color: #fff; min-width: 36px; text-align: center; }
 
-/* 切り分けグリッド */
+/* 切り分けプレビューセクションの修正 */
 .split-preview-section {
   margin-top: 40px;
   padding: 30px;
@@ -171,14 +165,8 @@ nav a:hover { color: var(--primary); }
   background: #000; 
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
-.split-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--primary);
-}
-.split-card.selected { 
-  border-color: var(--primary); 
-  box-shadow: 0 0 20px var(--primary-glow); 
-}
+.split-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+.split-card.selected { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 .split-card img { width: 100%; height: 100%; object-fit: cover; }
 .sel-badge { 
   position: absolute; top: 8px; right: 8px; 
@@ -186,9 +174,7 @@ nav a:hover { color: var(--primary); }
   background: var(--primary); display: flex; 
   align-items: center; justify-content: center; 
   font-size: 14px; color: white; font-weight: 800; 
-  opacity: 0; transform: scale(0.5);
-  transition: 0.2s;
-  z-index: 2;
+  opacity: 0; transform: scale(0.5); transition: 0.2s; z-index: 2;
 }
 .split-card.selected .sel-badge { opacity: 1; transform: scale(1); }
 
@@ -228,15 +214,12 @@ nav a:hover { color: var(--primary); }
 .preset-split-btn { flex: 1; min-width: 150px; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #27272a; color: #fff; cursor: pointer; font-size: 13px; font-weight: 700; transition: 0.2s; text-align: center; }
 .preset-split-btn.active { background: var(--primary); border-color: var(--primary); }
 
-/* モーダル/メッセージ */
+/* モーダル */
 .custom-modal {
   position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 5000;
   display: none; align-items: center; justify-content: center; padding: 20px;
 }
-.modal-content {
-  background: var(--bg-card); border: 1px solid var(--border); padding: 32px;
-  border-radius: 20px; max-width: 400px; width: 100%; text-align: center;
-}
+.modal-content { background: var(--bg-card); border: 1px solid var(--border); padding: 32px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; }
 
 footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--border); background: #09090b; color: #555; }
 .warning-text { color: var(--accent); font-weight: 700; margin-bottom: 12px; font-size: 14px; display: block; }
@@ -278,21 +261,9 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
   <div class="app-wrapper">
     <h2 style="text-align:center; font-size: 32px; font-weight:900; margin-bottom:40px;">使い方ガイド</h2>
     <div class="usage-steps">
-      <div class="step-card">
-        <span class="step-num">1</span>
-        <h3>画像の登録</h3>
-        <p>1枚ずつ追加するか、デッキ画像のスクリーンショットをアップロードします。他サイトからのドラッグ＆ドロップも可能です。</p>
-      </div>
-      <div class="step-card">
-        <span class="step-num">2</span>
-        <h3>位置合わせ</h3>
-        <p>「モード1」で画像を動かし、「モード2」で枠の4隅ハンドルを動かして範囲を確定させます。ズーム入力で拡大しながらの精密調整が便利です。</p>
-      </div>
-      <div class="step-card">
-        <span class="step-num">3</span>
-        <h3>PDF出力</h3>
-        <p>「印刷設定」で配置を確認し、PDFとして保存します。A4・100%設定で印刷してください。</p>
-      </div>
+      <div class="step-card"><span class="step-num">1</span><h3>画像の登録</h3><p>分解したい画像をアップロードするか、他サイトから直接ドラッグ＆ドロップして登録します。</p></div>
+      <div class="step-card"><span class="step-num">2</span><h3>位置合わせ</h3><p>画像を動かし、四隅のハンドルを動かして枠を合わせます。ズーム機能を併用すると精密に調整できます。</p></div>
+      <div class="step-card"><span class="step-num">3</span><h3>PDF出力</h3><p>配置を確認し、PDFとして保存します。A4・等倍（100%）設定で印刷してください。</p></div>
     </div>
   </div>
 </section>
@@ -303,7 +274,6 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
       <button class="tab-btn active" id="t-single" onclick="switchTab('single')">📁 1枚追加</button>
       <button class="tab-btn" id="t-deck" onclick="switchTab('deck')">🗂️ デッキ切り分け</button>
       <button class="tab-btn" id="t-print" onclick="switchTab('print')">🖨️ 印刷設定</button>
-      <button class="tab-btn" id="t-blog" onclick="switchTab('blog')">📝 ブログ</button>
     </div>
 
     <!-- 1枚ずつ追加 -->
@@ -313,13 +283,10 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
         <span style="font-size: 48px; display:block; margin-bottom:12px;">📁</span>
         <div style="font-weight:700;">ここに画像をドロップ、またはクリック</div>
       </div>
-      
-      <!-- 新設：リスト管理バー -->
       <div id="list-controls" style="display:none; justify-content:space-between; align-items:center; margin-bottom:20px; padding: 0 10px;">
         <h3 style="font-size:18px;">追加済みのカード</h3>
         <button onclick="confirmClearList()" style="background:rgba(239,68,68,0.1); color:var(--accent); border:1px solid rgba(239,68,68,0.2); padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;">リストを全て削除</button>
       </div>
-      
       <div class="card-grid" id="main-card-list"></div>
     </div>
 
@@ -332,8 +299,8 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
       </div>
       <div id="deck-editor" style="display:none;">
         <div class="layer-controls">
-          <button class="layer-btn active" id="btn-layer1" onclick="setLayerMode('image')">1 画像操作</button>
-          <button class="layer-btn" id="btn-layer2" onclick="setLayerMode('grid')">2 枠の調整</button>
+          <button class="layer-btn active" id="btn-layer1" onclick="setLayerMode('image')">1 位置調整</button>
+          <button class="layer-btn" id="btn-layer2" onclick="setLayerMode('grid')">2 範囲指定</button>
           <button class="layer-btn" style="background:var(--accent); color:white;" onclick="removeDeckImage()">削除</button>
         </div>
         <div class="split-presets">
@@ -341,7 +308,7 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
           <button class="preset-split-btn" id="p-split-mini" onclick="applySplitPreset('mini')">遊戯王</button>
         </div>
         <div class="zoom-control">
-          <label>表示ズーム</label>
+          <label>ズーム</label>
           <input type="range" id="source-zoom" min="20" max="400" value="50" oninput="updateSourceZoom('slider')">
           <div class="zoom-input-wrapper"><input type="number" id="zoom-input" value="50" oninput="updateSourceZoom('input')"><span>%</span></div>
         </div>
@@ -393,30 +360,10 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
       </div>
       <button class="btn-pdf" id="btn-pdf" onclick="exportPDF()" disabled style="margin-top:40px;">📥 全ページをPDFで保存</button>
     </div>
-
-    <!-- ブログ -->
-    <div class="tab-panel" id="panel-blog">
-      <div id="blog-editor" style="display:none;" class="blog-editor-container">
-        <h3>📝 記事を作成・編集</h3>
-        <input type="hidden" id="blog-edit-id">
-        <div class="blog-field"><label>タイトル</label><input type="text" id="blog-title"></div>
-        <div class="blog-field"><label>カテゴリー</label><select id="blog-category"><option value="攻略">攻略</option><option value="日記">日記</option><option value="お知らせ">お知らせ</option></select></div>
-        <div class="blog-field"><label>本文</label><textarea id="blog-body"></textarea></div>
-        <div class="blog-actions"><button class="btn-save" onclick="saveBlogPost()">公開する</button><button class="btn-cancel" onclick="cancelBlogEdit()">キャンセル</button></div>
-      </div>
-      <div id="blog-management">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-          <h3>最新の投稿</h3>
-          <button class="btn-nav-start" id="btn-new-post" style="display:none;" onclick="showBlogEditor()">+ 新規投稿</button>
-        </div>
-        <div id="blog-posts-list">記事を読み込み中...</div>
-      </div>
-      <div style="text-align:right; margin-top:40px;"><button class="btn-admin" id="btn-admin-login" onclick="promptAdminLogin()">管理者ログイン</button></div>
-    </div>
   </div>
 </section>
 
-<!-- 確認用モーダル -->
+<!-- 確認モーダル -->
 <div id="confirm-modal" class="custom-modal">
   <div class="modal-content">
     <h3 style="margin-bottom:16px;">リストをクリアしますか？</h3>
@@ -429,7 +376,7 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
 </div>
 
 <footer>
-  <span class="warning-text">※プロキシカードは公式大会等では使用できません。個人利用に限定してお楽しみください。</span>
+  <span class="warning-text">※プロキシカードは個人利用に限定してお楽しみください。</span>
   <p>&copy; 2026 ProProxy Maker.</p>
 </footer>
 
@@ -439,111 +386,24 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
 /**
  * State & Logic
  */
-const ADMIN_SECRET = "admin123";
-let isAdmin = false, blogPosts = [], cards = [], splitImages = [], splitSelected = new Set();
+let cards = [], splitImages = [], splitSelected = new Set();
 let deckImg = null, currentPreviewPage = 0, layerMode = 'image'; 
 let imgPos = { x: 0, y: 0 }, imgVisualScale = 0.5;
 let posTL = { x: 10, y: 10 }, posBR = { x: 90, y: 90 };
 let activeAction = null, dragStartPos = { x: 0, y: 0 };
 
-async function initBlog() {
+async function initAuth() {
   const api = window.firebaseApi;
   if (!api) return;
   try {
-    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-      await api.signInWithCustomToken(api.auth, __initial_auth_token);
-    } else { await api.signInAnonymously(api.auth); }
+    await api.signInAnonymously(api.auth);
   } catch (e) {}
-  api.onAuthStateChanged(api.auth, (user) => {
-    if (!user) return;
-    const postsRef = api.collection(api.db, 'artifacts', api.appId, 'public', 'data', 'blogPosts');
-    api.onSnapshot(postsRef, (snapshot) => {
-      blogPosts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      blogPosts.sort((a, b) => b.timestamp - a.timestamp);
-      renderBlogList();
-    }, (err) => console.error(err));
-  });
-}
-
-function promptAdminLogin() {
-  const pass = prompt("合言葉を入力してください:");
-  if (pass === ADMIN_SECRET) {
-    isAdmin = true;
-    document.getElementById('btn-new-post').style.display = 'block';
-    document.getElementById('btn-admin-login').innerText = "管理者モード実行中";
-    document.getElementById('btn-admin-login').disabled = true;
-    renderBlogList();
-  } else if(pass !== null) alert("違います。");
-}
-
-function showBlogEditor(postId = null) {
-  if(!isAdmin) return;
-  document.getElementById('blog-editor').style.display = 'block';
-  document.getElementById('blog-management').style.display = 'none';
-  if (postId) {
-    const post = blogPosts.find(p => p.id === postId);
-    if (post) {
-      document.getElementById('blog-edit-id').value = post.id;
-      document.getElementById('blog-title').value = post.title;
-      document.getElementById('blog-category').value = post.category;
-      document.getElementById('blog-body').value = post.body;
-    }
-  } else {
-    document.getElementById('blog-edit-id').value = '';
-    document.getElementById('blog-title').value = '';
-    document.getElementById('blog-body').value = '';
-  }
-}
-
-function cancelBlogEdit() {
-  document.getElementById('blog-editor').style.display = 'none';
-  document.getElementById('blog-management').style.display = 'block';
-}
-
-async function saveBlogPost() {
-  if(!isAdmin) return;
-  const api = window.firebaseApi;
-  const id = document.getElementById('blog-edit-id').value || Date.now().toString();
-  const title = document.getElementById('blog-title').value;
-  const category = document.getElementById('blog-category').value;
-  const body = document.getElementById('blog-body').value;
-  if (!title || !body) return alert("入力してください");
-  try {
-    await api.setDoc(api.doc(api.db, 'artifacts', api.appId, 'public', 'data', 'blogPosts', id), {
-      title, category, body, timestamp: Date.now(), date: new Date().toLocaleDateString('ja-JP')
-    });
-    cancelBlogEdit();
-  } catch(e) { alert("保存権限がありません。"); }
-}
-
-async function deleteBlogPost(id) {
-  if(!isAdmin) return;
-  if (confirm("削除しますか？")) {
-    try { await window.firebaseApi.deleteDoc(window.firebaseApi.doc(window.firebaseApi.db, 'artifacts', window.firebaseApi.appId, 'public', 'data', 'blogPosts', id)); } catch(e) {}
-  }
-}
-
-function renderBlogList() {
-  const list = document.getElementById('blog-posts-list');
-  if(!list) return;
-  list.innerHTML = blogPosts.length === 0 ? '<p style="text-align:center; padding:40px;">記事はありません。</p>' : '';
-  blogPosts.forEach(post => {
-    const card = document.createElement('div'); card.className = 'blog-card';
-    card.innerHTML = `<div style="font-size:12px; color:var(--primary); margin-bottom:8px;">${post.date} | ${post.category}</div>
-      <h4>${post.title}</h4><div class="content">${post.body}</div>
-      ${isAdmin ? `<div style="display:flex; gap:12px; margin-top:16px; border-top:1px solid #222; padding-top:12px;">
-        <button style="flex:1; padding:8px; border-radius:6px; border:none; background:#2a2a4a; color:#fff; cursor:pointer;" onclick="showBlogEditor('${post.id}')">編集</button>
-        <button style="flex:1; padding:8px; border-radius:6px; border:none; background:rgba(239,68,68,0.1); color:var(--accent); cursor:pointer;" onclick="deleteBlogPost('${post.id}')">削除</button>
-      </div>` : ''}`;
-    list.appendChild(card);
-  });
 }
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.id === `t-${tab}`));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `panel-${tab}`));
   if(tab === 'print') { currentPreviewPage = 0; updatePrintPreview(); }
-  if(tab === 'blog') renderBlogList();
 }
 
 function setLayerMode(mode) {
@@ -564,17 +424,7 @@ function updateSourceZoom(source) {
 }
 
 function applySplitPreset(type) {
-  const sizeSelect = document.getElementById('card-size');
   posTL = { x: 5, y: 5 }; posBR = { x: 95, y: 95 };
-  if (type === 'standard') {
-    document.getElementById('p-split-std').classList.add('active');
-    document.getElementById('p-split-mini').classList.remove('active');
-    if(sizeSelect) sizeSelect.value = "63,88";
-  } else {
-    document.getElementById('p-split-mini').classList.add('active');
-    document.getElementById('p-split-std').classList.remove('active');
-    if(sizeSelect) sizeSelect.value = "59,86";
-  }
   updateHandleUI(); splitDeck();
 }
 
@@ -655,18 +505,25 @@ function splitDeck() {
   const canvas = document.getElementById('split-canvas'), container = document.getElementById('source-container'), overlay = document.getElementById('deck-grid-overlay');
   if (!deckImg || !canvas || !overlay || !container) return;
   const cols = parseInt(document.getElementById('g-cols').value) || 1, rows = parseInt(document.getElementById('g-rows').value) || 1;
-  const xGap = parseFloat(document.getElementById('g-x-gap').value) || 0, crop = parseInt(document.getElementById('crop-all').value) || 0;
+  const xGapPercent = parseFloat(document.getElementById('g-x-gap').value) || 0, crop = parseInt(document.getElementById('crop-all').value) || 0;
+  
   overlay.width = container.offsetWidth; overlay.height = container.offsetHeight;
-  const oCtx = overlay.getContext('2d'); oCtx.clearRect(0,0,overlay.width,overlay.height); oCtx.strokeStyle = '#ff4444'; oCtx.lineWidth = 2;
-  const boxXS = (posTL.x / 100) * container.offsetWidth, boxYS = (posTL.y / 100) * container.offsetHeight, boxXE = (posBR.x / 100) * container.offsetWidth, boxYE = (posBR.y / 100) * container.offsetHeight;
+  const oCtx = overlay.getContext('2d'); oCtx.clearRect(0,0,overlay.width,overlay.height);
+  oCtx.strokeStyle = '#ff4444'; oCtx.lineWidth = 2;
+
+  const boxXS = (posTL.x / 100) * container.offsetWidth, boxYS = (posTL.y / 100) * container.offsetHeight;
+  const boxXE = (posBR.x / 100) * container.offsetWidth, boxYE = (posBR.y / 100) * container.offsetHeight;
   const boxW = boxXE - boxXS, boxH = boxYE - boxYS;
-  const unitW = (boxW - ( (cols-1) * (boxW * xGap/100) )) / cols, unitH = boxH / rows;
+  
+  const unitW = (boxW - ( (cols-1) * (boxW * xGapPercent/100) )) / cols;
+  const unitH = boxH / rows;
   if (unitW <= 2 || unitH <= 2) return;
+
   const dispW = container.offsetWidth * imgVisualScale, natRatio = deckImg.naturalWidth / dispW;
   splitImages = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const cx = boxXS + c * (unitW + (boxW * xGap/100)), cy = boxYS + r * unitH;
+      const cx = boxXS + c * (unitW + (boxW * xGapPercent/100)), cy = boxYS + r * unitH;
       oCtx.strokeRect(cx, cy, unitW, unitH);
       const sx = (cx - imgPos.x) * natRatio, sy = (cy - imgPos.y) * natRatio, sw = unitW * natRatio, sh = unitH * natRatio;
       canvas.width = Math.max(1, sw - crop * 2); canvas.height = Math.max(1, sh - crop * 2);
@@ -678,10 +535,10 @@ function splitDeck() {
   splitSelected = new Set(splitImages.map(s => s.id)); renderSplitGrid();
 }
 
-function onFileSingle(e) { processFiles(e.target.files, 'single'); e.target.value = ''; }
+function onFileSingle(e) { processFiles(Array.from(e.target.files), 'single'); e.target.value = ''; }
 function onFileDeck(e) { if(e.target.files[0]) loadDeck(e.target.files[0]); e.target.value = ''; }
 function processFiles(files, target) {
-  Array.from(files).forEach(file => {
+  files.forEach(file => {
     if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = ev => {
@@ -702,14 +559,7 @@ function removeDeckImage() { deckImg = null; document.getElementById('deck-src-i
 function renderMainList() {
   const grid = document.getElementById('main-card-list'); if(!grid) return;
   const bar = document.getElementById('list-controls');
-  grid.innerHTML = '';
-  
-  if (cards.length > 0) {
-    bar.style.display = 'flex';
-  } else {
-    bar.style.display = 'none';
-  }
-
+  grid.innerHTML = ''; bar.style.display = cards.length > 0 ? 'flex' : 'none';
   cards.forEach(card => {
     const div = document.createElement('div'); div.className = 'card-thumb';
     div.innerHTML = `<img src="${card.src}"><div class="badge">×${card.qty}</div>
@@ -724,19 +574,9 @@ function renderMainList() {
 function updateQty(id, d) { const c = cards.find(x => x.id === id); if(c) c.qty = Math.max(1, c.qty + d); renderMainList(); updatePrintPreview(); }
 function removeCard(id) { cards = cards.filter(x => x.id !== id); renderMainList(); updatePrintPreview(); }
 
-// 新設：一括クリア機能
-function confirmClearList() {
-  document.getElementById('confirm-modal').style.display = 'flex';
-}
-function closeModal() {
-  document.getElementById('confirm-modal').style.display = 'none';
-}
-function clearAllCards() {
-  cards = [];
-  renderMainList();
-  updatePrintPreview();
-  closeModal();
-}
+function confirmClearList() { document.getElementById('confirm-modal').style.display = 'flex'; }
+function closeModal() { document.getElementById('confirm-modal').style.display = 'none'; }
+function clearAllCards() { cards = []; renderMainList(); updatePrintPreview(); closeModal(); }
 
 function renderSplitGrid() {
   const grid = document.getElementById('split-grid'); if(!grid) return;
@@ -750,41 +590,33 @@ function renderSplitGrid() {
   });
   const btn = document.getElementById('btn-add-sel'); if(btn) { btn.disabled = splitSelected.size === 0; btn.innerText = `${splitSelected.size} 枚追加`; }
 }
-
 function selectAllSplit() { splitSelected = new Set(splitImages.map(s => s.id)); renderSplitGrid(); }
 function addSelectedCards() { splitImages.filter(s => splitSelected.has(s.id)).forEach(s => cards.push({ id: Math.random().toString(36), src: s.src, qty: 1 })); renderMainList(); switchTab('single'); }
 
 function changePreviewPage(delta) {
   const expandedCount = cards.reduce((a, b) => a + b.qty, 0);
-  const totalPages = Math.ceil(expandedCount / 9) || 1;
-  currentPreviewPage = Math.max(0, Math.min(totalPages - 1, currentPreviewPage + delta));
+  currentPreviewPage = Math.max(0, Math.min(Math.ceil(expandedCount / 9) - 1, currentPreviewPage + delta));
   updatePrintPreview();
 }
 
 function updatePrintPreview() {
   const sizeSelect = document.getElementById('card-size'), paper = document.getElementById('preview-paper');
   if (!sizeSelect || !paper) return;
-  const [cw, ch] = sizeSelect.value.split(',').map(Number);
-  const margin = 8, gap = 2, cols = 3, rows = 3;
-  const container = paper.parentElement;
-  const containerW = container.clientWidth - 40;
-  const containerH = window.innerHeight * 0.7;
-  const scaleW = containerW / 210, scaleH = containerH / 297;
-  const scale = Math.min(scaleW, scaleH);
+  const [cw, ch] = sizeSelect.value.split(',').map(Number), margin = 8, gap = 2;
+  const scale = Math.min((paper.parentElement.clientWidth - 40) / 210, (window.innerHeight * 0.7) / 297);
   paper.style.width = (210 * scale) + 'px'; paper.style.height = (297 * scale) + 'px'; paper.innerHTML = '';
-  for (let r = 0; r < 3; r++) { for (let c = 0; c < 3; c++) {
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) {
     const x = (margin + c * (cw + gap)) * scale, y = (margin + r * (ch + gap)) * scale;
     const guide = document.createElement('div'); guide.className = 'preview-slot-guide';
     guide.style.cssText = `left:${x}px;top:${y}px;width:${cw*scale}px;height:${ch*scale}px;`;
     paper.appendChild(guide);
-  }}
+  }
   const expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
   const totalPages = Math.ceil(expanded.length / 9) || 1;
-  const pageDisplay = document.getElementById('page-display'); if(pageDisplay) pageDisplay.innerText = `Page ${currentPreviewPage + 1} / ${totalPages}`;
+  document.getElementById('page-display').innerText = `Page ${currentPreviewPage + 1} / ${totalPages}`;
   const startIdx = currentPreviewPage * 9, endIdx = Math.min(startIdx + 9, expanded.length);
   for (let i = startIdx; i < endIdx; i++) {
-    const localIdx = i - startIdx, r = Math.floor(localIdx / cols), c = localIdx % cols;
-    const x = (margin + c * (cw + gap)) * scale, y = (margin + r * (ch + gap)) * scale;
+    const localIdx = i - startIdx, x = (margin + (localIdx % 3) * (cw + gap)) * scale, y = (margin + Math.floor(localIdx / 3) * (ch + gap)) * scale;
     const div = document.createElement('div'); div.className = 'preview-card';
     div.style.cssText = `left:${x}px;top:${y}px;width:${cw*scale}px;height:${ch*scale}px;z-index:2;`;
     div.innerHTML = `<img src="${expanded[i].src}">`; paper.appendChild(div);
@@ -793,17 +625,14 @@ function updatePrintPreview() {
 }
 
 async function exportPDF() {
-  const btn = document.getElementById('btn-pdf'); if(!btn) return;
-  btn.disabled = true; btn.innerText = 'PDF生成中...';
-  const {jsPDF} = window.jspdf, sizeSelect = document.getElementById('card-size');
-  const [cw, ch] = sizeSelect.value.split(',').map(Number), margin = 8, gap = 2, pdf = new jsPDF({unit: 'mm', format: 'a4'});
-  const expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
-  const perPage = 9;
-  for (let p = 0; p < Math.ceil(expanded.length / perPage); p++) {
+  const btn = document.getElementById('btn-pdf'); btn.disabled = true; btn.innerText = 'PDF生成中...';
+  const {jsPDF} = window.jspdf, [cw, ch] = document.getElementById('card-size').value.split(',').map(Number);
+  const pdf = new jsPDF({unit: 'mm', format: 'a4'}), expanded = []; cards.forEach(c => { for(let i=0; i<c.qty; i++) expanded.push(c); });
+  for (let p = 0; p < Math.ceil(expanded.length / 9); p++) {
     if (p > 0) pdf.addPage();
-    for (let i = 0; i < perPage; i++) {
-      const idx = p * perPage + i; if (!expanded[idx]) break;
-      const r = Math.floor(i / 3), c = i % 3, x = margin + c * (cw + gap), y = margin + r * (ch + gap);
+    for (let i = 0; i < 9; i++) {
+      const idx = p * 9 + i; if (!expanded[idx]) break;
+      const x = 8 + (i % 3) * (cw + 2), y = 8 + Math.floor(i / 3) * (ch + 2);
       await new Promise(res => { const img = new Image(); img.onload = () => { pdf.addImage(img, 'JPEG', x, y, cw, ch); pdf.setDrawColor(220); pdf.rect(x, y, cw, ch); res(); }; img.src = expanded[idx].src; });
     }
   }
@@ -813,20 +642,13 @@ async function exportPDF() {
 async function loadFromUrl(url, target) {
   try {
     const res = await fetch(url); const blob = await res.blob();
-    const reader = new FileReader();
-    reader.onload = ev => {
-      if (target === 'single') { cards.push({ id: Math.random().toString(36), src: ev.target.result, qty: 1 }); renderMainList(); }
-      else loadDeckImageFromSrc(ev.target.result);
-    };
-    reader.readAsDataURL(blob);
+    processFiles([blob], target);
   } catch (e) {
     const img = new Image(); img.crossOrigin = "anonymous";
     img.onload = () => {
       const cvs = document.createElement('canvas'); cvs.width = img.width; cvs.height = img.height;
       cvs.getContext('2d').drawImage(img, 0, 0);
-      const dataUrl = cvs.toDataURL('image/jpeg');
-      if (target === 'single') { cards.push({ id: Math.random().toString(36), src: dataUrl, qty: 1 }); renderMainList(); }
-      else loadDeckImageFromSrc(dataUrl);
+      processFiles([new Blob([cvs.toDataURL('image/jpeg')], {type: 'image/jpeg'})], target);
     };
     img.src = url;
   }
@@ -835,7 +657,6 @@ async function loadFromUrl(url, target) {
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('source-container');
   if(container) { container.addEventListener('mousedown', handleStart); container.addEventListener('touchstart', (e) => { handleStart(e); }, {passive: false}); }
-  
   ['single', 'deck'].forEach(type => {
     const zone = document.getElementById(type === 'single' ? 'drop-zone-single' : 'deck-upload-area');
     if(!zone) return;
@@ -844,14 +665,10 @@ document.addEventListener('DOMContentLoaded', () => {
     zone.addEventListener('drop', (e) => {
       e.preventDefault(); zone.classList.remove('drag-over');
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) processFiles(Array.from(e.dataTransfer.files), type);
-      else {
-        const html = e.dataTransfer.getData('text/html'), match = html && html.match(/src="([^"]+)"/);
-        if (match && match[1]) loadFromUrl(match[1], type);
-        else { const url = e.dataTransfer.getData('text/uri-list'); if (url) loadFromUrl(url, type); }
-      }
+      else { const html = e.dataTransfer.getData('text/html'), match = html && html.match(/src="([^"]+)"/); if (match && match[1]) loadFromUrl(match[1], type); }
     });
   });
-  initBlog();
+  initAuth();
 });
 window.addEventListener('mousemove', handleMove); window.addEventListener('mouseup', handleEnd);
 window.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
