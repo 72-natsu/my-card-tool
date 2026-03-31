@@ -1,4 +1,4 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -49,7 +49,7 @@ body {
   overflow-x: hidden;
 }
 
-/* --- ヘッダー & 広告 --- */
+/* --- ヘッダー --- */
 header {
   position: fixed;
   top: 0; width: 100%;
@@ -68,6 +68,7 @@ nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-w
 nav a:hover { color: var(--primary); }
 .btn-nav-start { background: var(--primary); color: #fff; padding: 8px 20px; border-radius: 8px; margin-left: 24px; transition: 0.3s; font-weight: 700; border: none; cursor: pointer; }
 
+/* --- 広告エリア --- */
 .ad-container {
   margin-top: 80px;
   padding: 20px;
@@ -89,23 +90,100 @@ nav a:hover { color: var(--primary); }
 }
 .hero h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; line-height: 1.1; margin-bottom: 24px; color: #fff; letter-spacing: -2px; }
 .hero p { font-size: 18px; color: var(--text-muted); max-width: 800px; margin: 0 auto 48px; }
-.hero-btns { display: flex; gap: 20px; justify-content: center; }
 .btn-hero { padding: 16px 36px; border-radius: 12px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
 .btn-p { background: var(--primary); color: #fff; box-shadow: 0 10px 30px var(--primary-glow); }
 
-/* --- 使い方ガイド --- */
+/* --- 使い方ガイドカード --- */
 .usage-section { padding: 80px 20px; background: #0c0c14; border-top: 1px solid var(--border); }
-.usage-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px; max-width: 1200px; margin: 40px auto 0; }
-.step-card { background: var(--bg-card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); position: relative; }
-.step-num { 
-  position: absolute; top: -24px; left: 24px; 
-  width: 48px; height: 48px; background: var(--primary); color: #fff; 
-  border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-  font-weight: 900; font-size: 22px; box-shadow: 0 4px 15px var(--primary-glow);
-  z-index: 5;
+.usage-card {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 25px;
+  background: #18181b;
+  padding: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 1px solid var(--border);
 }
-.step-card h3 { margin-top: 16px; margin-bottom: 12px; font-size: 22px; color: #fff; }
-.step-card p { color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+.usage-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.usage-image-container {
+  flex: 0 0 240px;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.usage-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.usage-text-content {
+  flex: 1;
+  min-width: 280px;
+}
+.usage-text-content h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #fff;
+  line-height: 1.4;
+}
+.usage-text-content p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.usage-link-label {
+  font-size: 14px;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* --- ガイド詳細ページ --- */
+#guide-detail-page {
+  display: none;
+  padding: 120px 20px 100px;
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease;
+}
+.guide-content-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 50px;
+  border-radius: 32px;
+}
+.guide-content-box h2 { font-size: 32px; margin-bottom: 30px; color: #fff; border-left: 6px solid var(--primary); padding-left: 20px; }
+.guide-content-box h4 { font-size: 20px; color: var(--primary); margin: 30px 0 15px; }
+.guide-content-box p { font-size: 16px; color: var(--text-main); margin-bottom: 20px; line-height: 1.8; }
+.guide-step-img { 
+  width: 100%; 
+  max-height: 400px; 
+  object-fit: cover; 
+  border-radius: 16px; 
+  margin: 20px 0; 
+  border: 1px solid var(--border);
+}
+.btn-back-to-tool {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 14px 30px;
+  background: #27272a;
+  color: #fff;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-back-to-tool:hover { background: var(--primary); }
 
 /* --- ツール本体 --- */
 .app-section { padding: 100px 24px; background: #0c0c14; border-top: 1px solid var(--border); }
@@ -117,6 +195,8 @@ nav a:hover { color: var(--primary); }
 
 .tab-panel { display: none; }
 .tab-panel.active { display: block; animation: fadeIn 0.5s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* 編集エリア */
 .source-container { position: relative; width: 100%; height: 75vh; overflow: hidden; border-radius: 20px; border: 1px solid #333; margin-bottom: 24px; background: #070710; user-select: none; touch-action: none; }
@@ -152,54 +232,17 @@ nav a:hover { color: var(--primary); }
   border: 1px solid var(--border);
   border-radius: 20px;
 }
-.split-grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-  gap: 16px; 
-  margin-top: 24px; 
-}
-.split-card { 
-  border-radius: 12px; 
-  overflow: hidden; 
-  aspect-ratio: 63/88; 
-  position: relative; 
-  border: 2px solid #333; 
-  cursor: pointer; 
-  background: #000; 
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-}
+.split-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; margin-top: 24px; }
+.split-card { border-radius: 12px; overflow: hidden; aspect-ratio: 63/88; position: relative; border: 2px solid #333; cursor: pointer; background: #000; transition: all 0.3s; }
 .split-card:hover { transform: translateY(-5px); border-color: var(--primary); }
 .split-card.selected { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 .split-card img { width: 100%; height: 100%; object-fit: cover; }
-.sel-badge { 
-  position: absolute; top: 8px; right: 8px; 
-  width: 26px; height: 26px; border-radius: 50%; 
-  background: var(--primary); display: flex; 
-  align-items: center; justify-content: center; 
-  font-size: 14px; color: white; font-weight: 800; 
-  opacity: 0; transform: scale(0.5); transition: 0.2s; z-index: 2;
-}
+.sel-badge { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: 800; opacity: 0; transform: scale(0.5); transition: 0.2s; z-index: 2; }
 .split-card.selected .sel-badge { opacity: 1; transform: scale(1); }
 
 /* 印刷プレビューエリア */
-.preview-section { 
-  background: #16213e; 
-  border-radius: 24px; 
-  padding: 40px 20px; 
-  margin-bottom: 40px; 
-  border: 1px solid #2a2a4a; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center;
-  min-height: 600px;
-}
-.preview-paper { 
-  background: white; 
-  margin: 0 auto; 
-  position: relative; 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6); 
-  transform-origin: top center;
-}
+.preview-section { background: #16213e; border-radius: 24px; padding: 40px 20px; margin-bottom: 40px; border: 1px solid #2a2a4a; display: flex; flex-direction: column; align-items: center; min-height: 600px; }
+.preview-paper { background: white; margin: 0 auto; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.6); transform-origin: top center; }
 .preview-card { position: absolute; border: 0.1px solid #ddd; overflow: hidden; background: #fff; }
 .preview-card img { width: 100%; height: 100%; object-fit: cover; }
 .preview-slot-guide { position: absolute; border: 1px dashed #ccc; background: rgba(0,0,0,0.02); pointer-events: none; z-index: 1; }
@@ -217,14 +260,53 @@ nav a:hover { color: var(--primary); }
 .preset-split-btn { flex: 1; min-width: 150px; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #27272a; color: #fff; cursor: pointer; font-size: 13px; font-weight: 700; transition: 0.2s; text-align: center; }
 .preset-split-btn.active { background: var(--primary); border-color: var(--primary); }
 
-/* モーダル */
-.custom-modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 5000;
-  display: none; align-items: center; justify-content: center; padding: 20px;
-}
+.custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-content { background: var(--bg-card); border: 1px solid var(--border); padding: 32px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; }
 
-footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--border); background: #09090b; color: #555; }
+/* --- 修正：詳細なフッター --- */
+footer {
+  margin-top: 80px; 
+  padding: 60px 20px; 
+  background-color: #0c0c14; 
+  color: #999; 
+  font-size: 13px; 
+  border-top: 1px solid var(--border); 
+  line-height: 1.8;
+}
+.footer-container {
+  max-width: 800px; 
+  margin: 0 auto; 
+  text-align: left;
+}
+.footer-container h2 {
+  color: #fff; 
+  font-size: 1.2rem; 
+  border-left: 4px solid var(--primary); 
+  padding-left: 15px; 
+  margin-bottom: 25px;
+  font-weight: 800;
+}
+.footer-container p { margin-bottom: 15px; }
+.footer-container a {
+  color: var(--primary); 
+  text-decoration: none;
+  font-weight: 700;
+}
+.footer-container a:hover { text-decoration: underline; }
+.footer-section-title {
+  color: #fff; 
+  font-size: 1.1rem; 
+  margin: 35px 0 15px 0;
+  font-weight: 700;
+}
+.copyright {
+  margin-top: 50px; 
+  text-align: center; 
+  color: #555; 
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
 .warning-text { color: var(--accent); font-weight: 700; margin-bottom: 12px; font-size: 14px; display: block; }
 
 .btn-pdf { width: 100%; padding: 24px; border-radius: 18px; background: linear-gradient(135deg, var(--primary), #5b4fcf); color: white; font-weight: 900; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 15px 40px var(--primary-glow); transition: 0.3s; }
@@ -234,143 +316,208 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
   header { padding: 12px 24px; }
   .source-container { height: 50vh; }
   .ad-container { margin-top: 60px; min-height: 270px; }
+  .usage-card { padding: 20px; }
+  .usage-image-container { flex: 0 0 100%; height: 180px; }
+  .footer-container { text-align: center; }
+  .footer-container h2 { border-left: none; padding-left: 0; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="#" class="logo">PRO<span>PROXY</span></a>
-  <nav>
-    <a href="#usage">使い方</a>
-    <a href="#tool" class="btn-nav-start">作成する</a>
-  </nav>
-</header>
+<!-- メインコンテンツ -->
+<div id="main-app-content">
+  <header>
+    <a href="#" class="logo">PRO<span>PROXY</span></a>
+    <nav>
+      <a href="#usage">使い方</a>
+      <a href="#tool" class="btn-nav-start">作成する</a>
+    </nav>
+  </header>
 
-<div class="ad-container">
-  <a href="https://px.a8.net/svt/ejp?a8mat=4AZQGP+96FLIQ+49YI+BYT9D" rel="nofollow">
-  <img border="0" width="300" height="250" alt="" src="https://www22.a8.net/svt/bgt?aid=260328121555&wid=001&eno=01&mid=s00000019953002010000&mc=1" loading="eager"></a>
+  <div class="ad-container">
+    <a href="https://px.a8.net/svt/ejp?a8mat=4AZQGP+96FLIQ+49YI+BYT9D" rel="nofollow">
+    <img border="0" width="300" height="250" alt="" src="https://www22.a8.net/svt/bgt?aid=260328121555&wid=001&eno=01&mid=s00000019953002010000&mc=1" loading="eager"></a>
+  </div>
+
+  <section class="hero">
+    <h2>そのデッキ画像、<br>一瞬で印刷用PDFに。</h2>
+    <p>ProProxyは、カードゲーマーのための高精度プロキシ作成ツールです。ドラッグ＆ドロップで画像を登録し、精密な操作でカードを切り分けます。</p>
+    <div class="hero-btns">
+      <a href="#tool" class="btn-hero btn-p">ツールへ移動</a>
+    </div>
+  </section>
+
+  <!-- 使い方ガイド -->
+  <section class="usage-section" id="usage">
+    <div class="app-wrapper">
+      <h2 style="text-align:center; font-size: 28px; font-weight:900; margin-bottom:40px;">使い方ガイド</h2>
+      
+      <div class="usage-card" onclick="toggleGuideView(true)">
+          <div class="usage-image-container">
+              <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?auto=format&fit=crop&q=80&w=600" alt="プロキシの作り方">
+          </div>
+          
+          <div class="usage-text-content">
+              <h3>【デュエルマスターズ】<br>初心者でも簡単！プロキシカードの作り方【スマホ・コンビニ印刷対応】</h3>
+              <p>画像保存から印刷サイズの設定まで、ステップ形式で詳しく解説しています。</p>
+              <div class="usage-link-label">
+                  → ガイドを詳しく読む
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-section" id="tool">
+    <div class="app-wrapper">
+      <div class="tabs">
+        <button class="tab-btn active" id="t-single" onclick="switchTab('single')">📁 1枚追加</button>
+        <button class="tab-btn" id="t-deck" onclick="switchTab('deck')">🗂️ デッキ切り分け</button>
+        <button class="tab-btn" id="t-print" onclick="switchTab('print')">🖨️ 印刷設定</button>
+      </div>
+
+      <!-- 1枚追加 -->
+      <div class="tab-panel active" id="panel-single">
+        <div class="upload-zone" id="drop-zone-single" onclick="document.getElementById('file-single').click()">
+          <input type="file" id="file-single" accept="image/*" multiple onchange="onFileSingle(event)" style="display:none;">
+          <span style="font-size: 48px; display:block; margin-bottom:12px;">📁</span>
+          <div style="font-weight:700;">ここに画像をドロップ、またはクリック</div>
+        </div>
+        <div id="list-controls" style="display:none; justify-content:space-between; align-items:center; margin-bottom:20px; padding: 0 10px;">
+          <h3 style="font-size:18px;">追加済みのカード</h3>
+          <button onclick="confirmClearList()" style="background:rgba(239,68,68,0.1); color:var(--accent); border:1px solid rgba(239,68,68,0.2); padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;">リストを全て削除</button>
+        </div>
+        <div class="card-grid" id="main-card-list"></div>
+      </div>
+
+      <!-- デッキ切り分け -->
+      <div class="tab-panel" id="panel-deck">
+        <div id="deck-upload-area" class="upload-zone" onclick="document.getElementById('file-deck').click()">
+          <input type="file" id="file-deck" accept="image/*" onchange="onFileDeck(event)" style="display:none;">
+          <span style="font-size: 48px; display:block; margin-bottom:12px;">🗂️</span>
+          <div style="font-weight:700;">デッキ画像をアップロード</div>
+        </div>
+        <div id="deck-editor" style="display:none;">
+          <div class="layer-controls">
+            <button class="layer-btn active" id="btn-layer1" onclick="setLayerMode('image')">1 位置調整</button>
+            <button class="layer-btn" id="btn-layer2" onclick="setLayerMode('grid')">2 範囲指定</button>
+            <button class="layer-btn" style="background:var(--accent); color:white;" onclick="removeDeckImage()">削除</button>
+          </div>
+          <div class="split-presets">
+            <button class="preset-split-btn active" id="p-split-std" onclick="applySplitPreset('standard')">標準サイズ</button>
+            <button class="preset-split-btn" id="p-split-mini" onclick="applySplitPreset('mini')">ミニサイズ</button>
+          </div>
+          <div class="zoom-control">
+            <label>ズーム</label>
+            <input type="range" id="source-zoom" min="20" max="400" value="50" oninput="updateSourceZoom('slider')">
+            <div class="zoom-input-wrapper"><input type="number" id="zoom-input" value="50" oninput="updateSourceZoom('input')"><span>%</span></div>
+          </div>
+          <div class="source-container" id="source-container">
+            <div class="workspace" id="workspace"><img id="deck-src-img" class="deck-source-img"></div>
+            <canvas id="deck-grid-overlay"></canvas>
+            <div id="handle-tl" class="grid-handle"></div><div id="handle-tr" class="grid-handle"></div>
+            <div id="handle-bl" class="grid-handle"></div><div id="handle-br" class="grid-handle"></div>
+            <canvas id="magnifier" width="180" height="180"></canvas>
+          </div>
+          <div class="grid-settings">
+            <div class="gs-field"><label>列数</label><input type="number" id="g-cols" value="8" oninput="splitDeck()"></div>
+            <div class="gs-field"><label>行数</label><input type="number" id="g-rows" value="5" oninput="splitDeck()"></div>
+            <div class="gs-field"><label>隙間%</label><input type="number" id="g-x-gap" value="0.0" step="0.1" oninput="splitDeck()"></div>
+            <div class="gs-field"><label>縁削px</label><input type="number" id="crop-all" value="2" oninput="splitDeck()"></div>
+            <div class="gs-field"><label>&nbsp;</label><button class="layer-btn" style="padding:10px;" onclick="resetAllPositions()">リセット</button></div>
+          </div>
+          
+          <div class="split-preview-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size:18px; color:var(--text-main);">切り分けプレビュー</h3>
+              <button class="layer-btn" style="max-width:120px; padding:8px; font-size:12px; background:#222;" onclick="selectAllSplit()">全て選択</button>
+            </div>
+            <div class="split-grid" id="split-grid"></div>
+            <button class="btn-pdf" id="btn-add-sel" onclick="addSelectedCards()" disabled style="margin-top:24px; font-size: 16px; padding: 16px;">選択したカードをリストに追加</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 印刷設定 -->
+      <div class="tab-panel" id="panel-print">
+        <div class="grid-settings" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
+          <div class="gs-field"><label>カードサイズ</label>
+            <select id="card-size" onchange="updatePrintPreview()" style="padding:14px; border-radius:12px; background:#0d1b2a; color:#fff;">
+              <option value="63,88">標準 (63×88mm)</option>
+              <option value="59,86">ミニ (59×86mm)</option>
+            </select>
+          </div>
+          <div class="gs-field"><label>余白(mm)</label><input type="number" id="p-margin" value="8" oninput="updatePrintPreview()"></div>
+          <div class="gs-field"><label>間隔(mm)</label><input type="number" id="p-gap" value="2" oninput="updatePrintPreview()"></div>
+        </div>
+        <div class="preview-section">
+          <div class="preview-pagination" style="display:flex; align-items:center; gap:20px; margin-bottom:30px;">
+            <button class="page-nav-btn" onclick="changePreviewPage(-1)" style="padding:10px 20px; border-radius:8px; background:#27272a; color:#fff; border:1px solid #444; cursor:pointer;">◀ 前</button>
+            <span class="page-info" id="page-display" style="font-weight:800; color:var(--primary); font-size: 18px;">Page 1 / 1</span>
+            <button class="page-nav-btn" onclick="changePreviewPage(1)" style="padding:10px 20px; border-radius:8px; background:#27272a; color:#fff; border:1px solid #444; cursor:pointer;">次 ▶</button>
+          </div>
+          <div id="preview-paper" class="preview-paper"></div>
+        </div>
+        <button class="btn-pdf" id="btn-pdf" onclick="exportPDF()" disabled style="margin-top:40px;">📥 全ページをPDFで保存</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+        <span class="warning-text">※プロキシカードは公式大会等では使用できません。個人利用に限定してお楽しみください。</span>
+        
+        <h2>プライバシーポリシー</h2>
+        <p>当サイト「ProProxy（proproxyfactory.net）」では、第三者配信による広告サービス「Googleアドセンス」を利用しています。広告配信事業者は、ユーザーの興味に応じた広告（パーソナライズ広告）を表示するために、Cookie（クッキー）を使用することがあります。</p>
+        <p>Cookieを使用することで、当サイトや他のサイトへの過去のアクセス情報に基づいた広告配信が可能になります。ユーザーは、Googleの「<a href="https://adssettings.google.com/authenticated" target="_blank" rel="noopener">広告設定</a>」でパーソナライズ広告を無効にできます。また、www.aboutads.info にアクセスすることで、第三者配信事業者のCookieを無効にすることも可能です。</p>
+        <p>その他、Googleアドセンスに関する詳細は「<a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" rel="noopener">Google広告規約</a>」をご覧ください。</p>
+
+        <h3 class="footer-section-title">運営者情報・お問い合わせ</h3>
+        <p>運営者：Natsume<br>
+           サイト名：ProProxy<br>
+           お問い合わせ：<a href="https://x.com/PROPROXYhr78" target="_blank" rel="noopener">こちら（X / 旧Twitter）からご連絡ください</a></p>
+        
+        <p class="copyright">© 2026 ProProxy. All Rights Reserved.</p>
+    </div>
+  </footer>
 </div>
 
-<section class="hero">
-  <h2>そのデッキ画像、<br>一瞬で印刷用PDFに。</h2>
-  <p>ProProxyは、カードゲーマーのための高精度プロキシ作成ツールです。ドラッグ＆ドロップで画像を登録し、精密な操作でカードを切り分けます。</p>
-  <div class="hero-btns">
-    <a href="#tool" class="btn-hero btn-p">ツールへ移動</a>
-  </div>
-</section>
+<!-- ガイド詳細ページ -->
+<div id="guide-detail-page">
+  <div class="guide-content-box">
+    <div style="margin-bottom: 30px;"><button class="btn-back-to-tool" onclick="toggleGuideView(false)">← ツールに戻る</button></div>
+    
+    <h2>プロキシカードの作り方ガイド</h2>
+    <p>このページでは、初心者の方でもデュエルマスターズやポケカ等のプロキシカードを、スマホ・コンビニ印刷対応で作る方法を詳しく解説します。</p>
+    
+    <h4>STEP 1: 画像の準備</h4>
+    <p>公式サイトやデッキ作成アプリなどでカードの画像を保存します。ProProxyは、デッキメーカー様の「デッキ画像出力」に対応しております。</p>
+    <p style="background: rgba(124, 106, 247, 0.1); padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary); font-weight: 700; color: var(--primary);">
+      ※多少のズレが起こりますので、気になる方は一枚追加をお勧めします。
+    </p>
+    <img src="https://images.unsplash.com/photo-1544652478-6653e09f18a2?auto=format&fit=crop&q=80&w=1000" class="guide-step-img" alt="カード保存方法">
 
-<section class="usage-section" id="usage">
-  <div class="app-wrapper">
-    <h2 style="text-align:center; font-size: 32px; font-weight:900; margin-bottom:40px;">使い方ガイド</h2>
-    <div class="usage-steps">
-      <div class="step-card"><span class="step-num">1</span><h3>画像の登録</h3><p>分解したい画像をアップロードするか、他サイトから直接ドラッグ＆ドロップして登録します。</p></div>
-      <div class="step-card"><span class="step-num">2</span><h3>位置合わせ</h3><p>画像を動かし、四隅のハンドルを動かして枠を合わせます。ズーム機能を併用すると精密に調整できます。</p></div>
-      <div class="step-card"><span class="step-num">3</span><h3>PDF出力</h3><p>配置を確認し、PDFとして保存します。A4・等倍（100%）設定で印刷してください。</p></div>
+    <h4>STEP 2: ツールでの位置調整</h4>
+    <p>保存した画像をツールにアップロードし、赤枠を調整します。「ズーム」機能を使って拡大しながら調整すると、カードの縁が綺麗に切り抜けます。</p>
+    
+    <h4>STEP 3: 印刷設定とPDF保存</h4>
+    <p>カードサイズ（標準：63×88mm、ミニ：59×86mm）を選択します。最後に「PDFで保存」ボタンを押し、ファイルをダウンロードしてください。</p>
+
+    <h4>STEP 4: コンビニ・自宅で印刷</h4>
+    <p>作成されたPDFはA4サイズになっています。印刷時は設定を必ず<b>「等倍（100%）」</b>または<b>「実際のサイズ」</b>にしてください。「用紙に合わせる」を選ぶとサイズがズレてしまうので注意が必要です。</p>
+    
+    <div style="text-align: center;">
+      <button class="btn-hero btn-p" style="margin-top:40px;" onclick="toggleGuideView(false)">さっそく作成を始める</button>
     </div>
   </div>
-</section>
-
-<section class="app-section" id="tool">
-  <div class="app-wrapper">
-    <div class="tabs">
-      <button class="tab-btn active" id="t-single" onclick="switchTab('single')">📁 1枚追加</button>
-      <button class="tab-btn" id="t-deck" onclick="switchTab('deck')">🗂️ デッキ切り分け</button>
-      <button class="tab-btn" id="t-print" onclick="switchTab('print')">🖨️ 印刷設定</button>
-    </div>
-
-    <!-- 1枚ずつ追加 -->
-    <div class="tab-panel active" id="panel-single">
-      <div class="upload-zone" id="drop-zone-single" onclick="document.getElementById('file-single').click()">
-        <input type="file" id="file-single" accept="image/*" multiple onchange="onFileSingle(event)" style="display:none;">
-        <span style="font-size: 48px; display:block; margin-bottom:12px;">📁</span>
-        <div style="font-weight:700;">ここに画像をドロップ、またはクリック</div>
-      </div>
-      <div id="list-controls" style="display:none; justify-content:space-between; align-items:center; margin-bottom:20px; padding: 0 10px;">
-        <h3 style="font-size:18px;">追加済みのカード</h3>
-        <button onclick="confirmClearList()" style="background:rgba(239,68,68,0.1); color:var(--accent); border:1px solid rgba(239,68,68,0.2); padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;">リストを全て削除</button>
-      </div>
-      <div class="card-grid" id="main-card-list"></div>
-    </div>
-
-    <!-- デッキ切り分け -->
-    <div class="tab-panel" id="panel-deck">
-      <div id="deck-upload-area" class="upload-zone" onclick="document.getElementById('file-deck').click()">
-        <input type="file" id="file-deck" accept="image/*" onchange="onFileDeck(event)" style="display:none;">
-        <span style="font-size: 48px; display:block; margin-bottom:12px;">🗂️</span>
-        <div style="font-weight:700;">デッキ画像をアップロード</div>
-      </div>
-      <div id="deck-editor" style="display:none;">
-        <div class="layer-controls">
-          <button class="layer-btn active" id="btn-layer1" onclick="setLayerMode('image')">1 位置調整</button>
-          <button class="layer-btn" id="btn-layer2" onclick="setLayerMode('grid')">2 範囲指定</button>
-          <button class="layer-btn" style="background:var(--accent); color:white;" onclick="removeDeckImage()">削除</button>
-        </div>
-        <div class="split-presets">
-          <button class="preset-split-btn active" id="p-split-std" onclick="applySplitPreset('standard')">デュエマ、ポケカ</button>
-          <button class="preset-split-btn" id="p-split-mini" onclick="applySplitPreset('mini')">遊戯王</button>
-        </div>
-        <div class="zoom-control">
-          <label>ズーム</label>
-          <input type="range" id="source-zoom" min="20" max="400" value="50" oninput="updateSourceZoom('slider')">
-          <div class="zoom-input-wrapper"><input type="number" id="zoom-input" value="50" oninput="updateSourceZoom('input')"><span>%</span></div>
-        </div>
-        <div class="source-container" id="source-container">
-          <div class="workspace" id="workspace"><img id="deck-src-img" class="deck-source-img"></div>
-          <canvas id="deck-grid-overlay"></canvas>
-          <div id="handle-tl" class="grid-handle"></div><div id="handle-tr" class="grid-handle"></div>
-          <div id="handle-bl" class="grid-handle"></div><div id="handle-br" class="grid-handle"></div>
-          <canvas id="magnifier" width="180" height="180"></canvas>
-        </div>
-        <div class="grid-settings">
-          <div class="gs-field"><label>列数</label><input type="number" id="g-cols" value="8" oninput="splitDeck()"></div>
-          <div class="gs-field"><label>行数</label><input type="number" id="g-rows" value="5" oninput="splitDeck()"></div>
-          <div class="gs-field"><label>隙間%</label><input type="number" id="g-x-gap" value="0.0" step="0.1" oninput="splitDeck()"></div>
-          <div class="gs-field"><label>縁削px</label><input type="number" id="crop-all" value="2" oninput="splitDeck()"></div>
-          <div class="gs-field"><label>&nbsp;</label><button class="layer-btn" style="padding:10px;" onclick="resetAllPositions()">リセット</button></div>
-        </div>
-        
-        <div class="split-preview-section">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-            <h3 style="font-size:18px; color:var(--text-main);">切り分けプレビュー</h3>
-            <button class="layer-btn" style="max-width:120px; padding:8px; font-size:12px; background:#222;" onclick="selectAllSplit()">全て選択</button>
-          </div>
-          <div class="split-grid" id="split-grid"></div>
-          <button class="btn-pdf" id="btn-add-sel" onclick="addSelectedCards()" disabled style="margin-top:24px; font-size: 16px; padding: 16px;">選択したカードをリストに追加</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 印刷設定 -->
-    <div class="tab-panel" id="panel-print">
-      <div class="grid-settings" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
-        <div class="gs-field"><label>カードサイズ</label>
-          <select id="card-size" onchange="updatePrintPreview()" style="padding:14px; border-radius:12px; background:#0d1b2a; color:#fff;">
-            <option value="63,88">デュエマ、ポケカ (63×88mm)</option>
-            <option value="59,86">遊戯王 (59×86mm)</option>
-          </select>
-        </div>
-        <div class="gs-field"><label>余白(mm)</label><input type="number" id="p-margin" value="8" oninput="updatePrintPreview()"></div>
-        <div class="gs-field"><label>間隔(mm)</label><input type="number" id="p-gap" value="2" oninput="updatePrintPreview()"></div>
-      </div>
-      <div class="preview-section">
-        <div class="preview-pagination" style="display:flex; align-items:center; gap:20px; margin-bottom:30px;">
-          <button class="page-nav-btn" onclick="changePreviewPage(-1)" style="padding:10px 20px; border-radius:8px; background:#27272a; color:#fff; border:1px solid #444; cursor:pointer;">◀ 前</button>
-          <span class="page-info" id="page-display" style="font-weight:800; color:var(--primary); font-size: 18px;">Page 1 / 1</span>
-          <button class="page-nav-btn" onclick="changePreviewPage(1)" style="padding:10px 20px; border-radius:8px; background:#27272a; color:#fff; border:1px solid #444; cursor:pointer;">次 ▶</button>
-        </div>
-        <div id="preview-paper" class="preview-paper"></div>
-      </div>
-      <button class="btn-pdf" id="btn-pdf" onclick="exportPDF()" disabled style="margin-top:40px;">📥 全ページをPDFで保存</button>
-    </div>
-  </div>
-</section>
+</div>
 
 <!-- 確認モーダル -->
 <div id="confirm-modal" class="custom-modal">
   <div class="modal-content">
     <h3 style="margin-bottom:16px;">リストをクリアしますか？</h3>
-    <p style="color:var(--text-muted); margin-bottom:24px;">追加された全てのカードが削除されます。この操作は取り消せません。</p>
+    <p style="color:var(--text-muted); margin-bottom:24px;">追加された全てのカードが削除されます。</p>
     <div style="display:flex; gap:12px;">
       <button onclick="closeModal()" style="flex:1; padding:12px; border-radius:10px; border:1px solid #444; background:none; color:#fff; cursor:pointer;">キャンセル</button>
       <button onclick="clearAllCards()" style="flex:1; padding:12px; border-radius:10px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer;">全て削除</button>
@@ -378,16 +525,11 @@ footer { padding: 80px 20px; text-align: center; border-top: 1px solid var(--bor
   </div>
 </div>
 
-<footer>
-  <span class="warning-text">※プロキシカードは個人利用に限定してお楽しみください。</span>
-  <p>&copy; 2026 ProProxy Maker.</p>
-</footer>
-
 <canvas id="split-canvas" style="display:none;"></canvas>
 
 <script>
 /**
- * State & Logic
+ * Logic State
  */
 let cards = [], splitImages = [], splitSelected = new Set();
 let deckImg = null, currentPreviewPage = 0, layerMode = 'image'; 
@@ -395,12 +537,23 @@ let imgPos = { x: 0, y: 0 }, imgVisualScale = 0.5;
 let posTL = { x: 10, y: 10 }, posBR = { x: 90, y: 90 };
 let activeAction = null, dragStartPos = { x: 0, y: 0 };
 
+function toggleGuideView(show) {
+  const main = document.getElementById('main-app-content');
+  const guide = document.getElementById('guide-detail-page');
+  if (show) {
+    main.style.display = 'none';
+    guide.style.display = 'block';
+    window.scrollTo(0,0);
+  } else {
+    main.style.display = 'block';
+    guide.style.display = 'none';
+  }
+}
+
 async function initAuth() {
   const api = window.firebaseApi;
   if (!api) return;
-  try {
-    await api.signInAnonymously(api.auth);
-  } catch (e) {}
+  try { await api.signInAnonymously(api.auth); } catch (e) {}
 }
 
 function switchTab(tab) {
@@ -509,19 +662,14 @@ function splitDeck() {
   if (!deckImg || !canvas || !overlay || !container) return;
   const cols = parseInt(document.getElementById('g-cols').value) || 1, rows = parseInt(document.getElementById('g-rows').value) || 1;
   const xGapPercent = parseFloat(document.getElementById('g-x-gap').value) || 0, crop = parseInt(document.getElementById('crop-all').value) || 0;
-  
   overlay.width = container.offsetWidth; overlay.height = container.offsetHeight;
   const oCtx = overlay.getContext('2d'); oCtx.clearRect(0,0,overlay.width,overlay.height);
   oCtx.strokeStyle = '#ff4444'; oCtx.lineWidth = 2;
-
   const boxXS = (posTL.x / 100) * container.offsetWidth, boxYS = (posTL.y / 100) * container.offsetHeight;
   const boxXE = (posBR.x / 100) * container.offsetWidth, boxYE = (posBR.y / 100) * container.offsetHeight;
   const boxW = boxXE - boxXS, boxH = boxYE - boxYS;
-  
-  const unitW = (boxW - ( (cols-1) * (boxW * xGapPercent/100) )) / cols;
-  const unitH = boxH / rows;
+  const unitW = (boxW - ( (cols-1) * (boxW * xGapPercent/100) )) / cols, unitH = boxH / rows;
   if (unitW <= 2 || unitH <= 2) return;
-
   const dispW = container.offsetWidth * imgVisualScale, natRatio = deckImg.naturalWidth / dispW;
   splitImages = [];
   for (let r = 0; r < rows; r++) {
@@ -576,7 +724,6 @@ function renderMainList() {
 }
 function updateQty(id, d) { const c = cards.find(x => x.id === id); if(c) c.qty = Math.max(1, c.qty + d); renderMainList(); updatePrintPreview(); }
 function removeCard(id) { cards = cards.filter(x => x.id !== id); renderMainList(); updatePrintPreview(); }
-
 function confirmClearList() { document.getElementById('confirm-modal').style.display = 'flex'; }
 function closeModal() { document.getElementById('confirm-modal').style.display = 'none'; }
 function clearAllCards() { cards = []; renderMainList(); updatePrintPreview(); closeModal(); }
@@ -593,7 +740,6 @@ function renderSplitGrid() {
   });
   const btn = document.getElementById('btn-add-sel'); if(btn) { btn.disabled = splitSelected.size === 0; btn.innerText = `${splitSelected.size} 枚追加`; }
 }
-
 function selectAllSplit() { splitSelected = new Set(splitImages.map(s => s.id)); renderSplitGrid(); }
 function addSelectedCards() { splitImages.filter(s => splitSelected.has(s.id)).forEach(s => cards.push({ id: Math.random().toString(36), src: s.src, qty: 1 })); renderMainList(); switchTab('single'); }
 
