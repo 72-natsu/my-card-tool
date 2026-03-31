@@ -211,7 +211,7 @@ nav a:hover { color: var(--primary); }
 .zoom-input-wrapper { display: flex; align-items: center; gap: 4px; }
 .zoom-input-wrapper input { width: 70px; padding: 10px; border-radius: 10px; border: 1px solid #333; background: #0d1b2a; color: #fff; font-weight: 900; text-align: center; }
 
-/* カード & コントロール */
+/* カードリスト & コントロール */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; margin-bottom: 40px; }
 .card-thumb { border-radius: 16px; overflow: hidden; aspect-ratio: 63/88; position: relative; background: #000; border: 1px solid #333; }
 .card-thumb img { width: 100%; height: 100%; object-fit: contain; }
@@ -263,7 +263,7 @@ nav a:hover { color: var(--primary); }
 .custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-content { background: var(--bg-card); border: 1px solid var(--border); padding: 32px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; }
 
-/* --- 修正：詳細なフッター --- */
+/* --- 詳細なフッター --- */
 footer {
   margin-top: 80px; 
   padding: 60px 20px; 
@@ -325,7 +325,7 @@ footer {
 </head>
 <body>
 
-<!-- メインコンテンツ -->
+<!-- メインコンテンツ (ツール画面) -->
 <div id="main-app-content">
   <header>
     <a href="#" class="logo">PRO<span>PROXY</span></a>
@@ -377,7 +377,7 @@ footer {
         <button class="tab-btn" id="t-print" onclick="switchTab('print')">🖨️ 印刷設定</button>
       </div>
 
-      <!-- 1枚追加 -->
+      <!-- 1枚ずつ追加 -->
       <div class="tab-panel active" id="panel-single">
         <div class="upload-zone" id="drop-zone-single" onclick="document.getElementById('file-single').click()">
           <input type="file" id="file-single" accept="image/*" multiple onchange="onFileSingle(event)" style="display:none;">
@@ -474,7 +474,7 @@ footer {
         <p>その他、Googleアドセンスに関する詳細は「<a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" rel="noopener">Google広告規約</a>」をご覧ください。</p>
 
         <h3 class="footer-section-title">運営者情報・お問い合わせ</h3>
-        <p>運営者：Natsume<br>
+        <p>運営者：PROPRO<br>
            サイト名：ProProxy<br>
            お問い合わせ：<a href="https://x.com/PROPROXYhr78" target="_blank" rel="noopener">こちら（X / 旧Twitter）からご連絡ください</a></p>
         
