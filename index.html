@@ -6,7 +6,7 @@
 <meta name="google-site-verification" content="ukRUPPyodkzOmoVOvQbp-ceaLwcpBCDhMbnDvQbWQhg">
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3653322198841230" crossorigin="anonymous"></script>
-<title>ProProxy | プロ級プロキシーカードメーカー</title>
+<title>プロプロキシ | プロ級プロキシーカードメーカー</title>
 <!-- 外部ライブラリ: PDF生成用 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- Firebase SDK (認証用) -->
@@ -62,7 +62,7 @@ header {
   align-items: center;
   z-index: 1000;
 }
-.logo { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -1px; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -0.5px; text-decoration: none; display: flex; align-items: center; gap: 4px; }
 .logo span { color: var(--primary); }
 nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; margin-left: 24px; transition: color 0.2s; }
 nav a:hover { color: var(--primary); }
@@ -88,7 +88,7 @@ nav a:hover { color: var(--primary); }
   text-align: center;
   background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #09090b 70%);
 }
-.hero h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; line-height: 1.1; margin-bottom: 24px; color: #fff; letter-spacing: -2px; }
+.hero h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; line-height: 1.1; margin-bottom: 24px; color: #fff; letter-spacing: -1px; }
 .hero p { font-size: 18px; color: var(--text-muted); max-width: 800px; margin: 0 auto 48px; }
 .btn-hero { padding: 16px 36px; border-radius: 12px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
 .btn-p { background: var(--primary); color: #fff; box-shadow: 0 10px 30px var(--primary-glow); }
@@ -211,7 +211,7 @@ nav a:hover { color: var(--primary); }
 .zoom-input-wrapper { display: flex; align-items: center; gap: 4px; }
 .zoom-input-wrapper input { width: 70px; padding: 10px; border-radius: 10px; border: 1px solid #333; background: #0d1b2a; color: #fff; font-weight: 900; text-align: center; }
 
-/* カードリスト & コントロール */
+/* カード & コントロール */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; margin-bottom: 40px; }
 .card-thumb { border-radius: 16px; overflow: hidden; aspect-ratio: 63/88; position: relative; background: #000; border: 1px solid #333; }
 .card-thumb img { width: 100%; height: 100%; object-fit: contain; }
@@ -263,7 +263,7 @@ nav a:hover { color: var(--primary); }
 .custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-content { background: var(--bg-card); border: 1px solid var(--border); padding: 32px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; }
 
-/* --- 詳細なフッター --- */
+/* --- フッター --- */
 footer {
   margin-top: 80px; 
   padding: 60px 20px; 
@@ -325,10 +325,10 @@ footer {
 </head>
 <body>
 
-<!-- メインコンテンツ (ツール画面) -->
+<!-- メインコンテンツ -->
 <div id="main-app-content">
   <header>
-    <a href="#" class="logo">PRO<span>PROXY</span></a>
+    <a href="#" class="logo">プロ<span>プロキシ</span></a>
     <nav>
       <a href="#usage">使い方</a>
       <a href="#tool" class="btn-nav-start">作成する</a>
@@ -342,7 +342,7 @@ footer {
 
   <section class="hero">
     <h2>そのデッキ画像、<br>一瞬で印刷用PDFに。</h2>
-    <p>ProProxyは、カードゲーマーのための高精度プロキシ作成ツールです。ドラッグ＆ドロップで画像を登録し、精密な操作でカードを切り分けます。</p>
+    <p>プロプロキシは、カードゲーマーのための高精度プロキシ作成ツールです。ドラッグ＆ドロップで画像を登録し、精密な操作でカードを切り分けます。</p>
     <div class="hero-btns">
       <a href="#tool" class="btn-hero btn-p">ツールへ移動</a>
     </div>
@@ -377,7 +377,7 @@ footer {
         <button class="tab-btn" id="t-print" onclick="switchTab('print')">🖨️ 印刷設定</button>
       </div>
 
-      <!-- 1枚ずつ追加 -->
+      <!-- 1枚追加 -->
       <div class="tab-panel active" id="panel-single">
         <div class="upload-zone" id="drop-zone-single" onclick="document.getElementById('file-single').click()">
           <input type="file" id="file-single" accept="image/*" multiple onchange="onFileSingle(event)" style="display:none;">
@@ -469,16 +469,16 @@ footer {
         <span class="warning-text">※プロキシカードは公式大会等では使用できません。個人利用に限定してお楽しみください。</span>
         
         <h2>プライバシーポリシー</h2>
-        <p>当サイト「ProProxy（proproxyfactory.net）」では、第三者配信による広告サービス「Googleアドセンス」を利用しています。広告配信事業者は、ユーザーの興味に応じた広告（パーソナライズ広告）を表示するために、Cookie（クッキー）を使用することがあります。</p>
+        <p>当サイト「プロプロキシ（proproxyfactory.net）」では、第三者配信による広告サービス「Googleアドセンス」を利用しています。広告配信事業者は、ユーザーの興味に応じた広告（パーソナライズ広告）を表示するために、Cookie（クッキー）を使用することがあります。</p>
         <p>Cookieを使用することで、当サイトや他のサイトへの過去のアクセス情報に基づいた広告配信が可能になります。ユーザーは、Googleの「<a href="https://adssettings.google.com/authenticated" target="_blank" rel="noopener">広告設定</a>」でパーソナライズ広告を無効にできます。また、www.aboutads.info にアクセスすることで、第三者配信事業者のCookieを無効にすることも可能です。</p>
         <p>その他、Googleアドセンスに関する詳細は「<a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" rel="noopener">Google広告規約</a>」をご覧ください。</p>
 
         <h3 class="footer-section-title">運営者情報・お問い合わせ</h3>
         <p>運営者：PROPRO<br>
-           サイト名：ProProxy<br>
+           サイト名：プロプロキシ<br>
            お問い合わせ：<a href="https://x.com/PROPROXYhr78" target="_blank" rel="noopener">こちら（X / 旧Twitter）からご連絡ください</a></p>
         
-        <p class="copyright">© 2026 ProProxy. All Rights Reserved.</p>
+        <p class="copyright">© 2026 プロプロキシ. All Rights Reserved.</p>
     </div>
   </footer>
 </div>
@@ -492,7 +492,7 @@ footer {
     <p>このページでは、初心者の方でもデュエルマスターズやポケカ等のプロキシカードを、スマホ・コンビニ印刷対応で作る方法を詳しく解説します。</p>
     
     <h4>STEP 1: 画像の準備</h4>
-    <p>公式サイトやデッキ作成アプリなどでカードの画像を保存します。ProProxyは、デッキメーカー様の「デッキ画像出力」に対応しております。</p>
+    <p>公式サイトやデッキ作成アプリなどでカードの画像を保存します。プロプロキシは、デッキメーカー様の「デッキ画像出力」に対応しております。</p>
     <p style="background: rgba(124, 106, 247, 0.1); padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary); font-weight: 700; color: var(--primary);">
       ※多少のズレが起こりますので、気になる方は一枚追加をお勧めします。
     </p>
@@ -792,7 +792,7 @@ async function exportPDF() {
 async function loadFromUrl(url, target) {
   try {
     const res = await fetch(url); const blob = await res.blob();
-    processFiles([blob], target);
+    processFiles(Array.from([blob]), target);
   } catch (e) {
     const img = new Image(); img.crossOrigin = "anonymous";
     img.onload = () => {
