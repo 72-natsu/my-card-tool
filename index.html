@@ -187,7 +187,7 @@ nav a:hover { color: var(--primary); }
 .btn-back-to-tool:hover { background: var(--primary); }
 
 /* --- ツール本体 --- */
-.app-section { padding: 100px 24px; background: #0c0c14; border-top: 1px solid var(--border); }
+.app-section { padding: 80px 24px 100px; background: #0c0c14; border-top: 1px solid var(--border); }
 .app-wrapper { max-width: 1400px; margin: 0 auto; }
 
 .tabs { display: flex; background: #1a1a2e; border-radius: 16px; padding: 8px; margin-bottom: 40px; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); overflow-x: auto; }
@@ -349,10 +349,10 @@ footer {
     </div>
   </section>
 
-  <!-- 使い方ガイド -->
+  <!-- 使い方ガイド (詳細ページへの導線) -->
   <section class="usage-section" id="usage">
     <div class="app-wrapper">
-      <h2 style="text-align:center; font-size: 28px; font-weight:900; margin-bottom:40px;">使い方ガイド</h2>
+      <h2 style="text-align:center; font-size: 28px; font-weight:900; margin-bottom:40px;">詳細ガイド</h2>
       
       <div class="usage-card" onclick="toggleGuideView(true)">
           <div class="usage-image-container">
@@ -368,6 +368,20 @@ footer {
           </div>
       </div>
     </div>
+  </section>
+
+  <!-- プロプロキシの使い方ガイド (概要セクション) -->
+  <section style="max-width: 900px; margin: 40px auto; padding: 40px; background: var(--bg-card); border-radius: 24px; color: #eee; line-height: 1.8; border: 1px solid var(--border);">
+      <h2 style="border-bottom: 2px solid var(--primary); padding-bottom: 12px; font-weight: 900; color: #fff; margin-bottom: 24px;">プロプロキシの使い方ガイド</h2>
+      <p style="margin-bottom: 20px; font-size: 16px;">当ツールは、デュエルマスターズやポケモンカードなどのTCG用プロキシを、スマホ一台で誰でも簡単に作成できるWebアプリです。</p>
+      <ul style="list-style-type: decimal; padding-left: 20px; margin-bottom: 24px;">
+          <li><strong style="color: var(--primary);">画像を選択：</strong> お手持ちのカード画像をアップロードします。</li>
+          <li><strong style="color: var(--primary);">自動サイズ調整：</strong> 面倒なサイズ計算は不要。B5/A4サイズに自動配置されます。</li>
+          <li><strong style="color: var(--primary);">コンビニ等で印刷：</strong> 保存したPDFをネットプリント等で印刷するだけで完成！</li>
+      </ul>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
+          ※詳しい作り方のコツについては<a href="https://note.com" target="_blank" style="color: var(--primary); font-weight: 700; text-decoration: none;">公式Note</a>でも発信しています。
+      </p>
   </section>
 
   <section class="app-section" id="tool">
@@ -484,7 +498,7 @@ footer {
   </footer>
 </div>
 
-<!-- ガイド詳細ページ -->
+<!-- ガイド詳細ページ (アプリ内遷移) -->
 <div id="guide-detail-page">
   <div class="guide-content-box">
     <div style="margin-bottom: 30px;"><button class="btn-back-to-tool" onclick="toggleGuideView(false)">← ツールに戻る</button></div>
